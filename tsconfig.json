@@ -1,19 +1,19 @@
 {
 	"compilerOptions": {
 		"target": "es2019",                                  /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
+		"outDir": "dist",                                   /* Specify an output folder for all emitted files. */
     "module": "commonjs",                                /* Specify what module code is generated. */
+		"rootDirs": ["src"],                                   /* Allow multiple folders to be treated as one when resolving modules. */
+		"esModuleInterop": true,                             /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */
+		"baseUrl": "src",                                  /* Specify the base directory to resolve non-relative module names. */
     "paths": {
 			"@/*": ["*"]
 		},                                      
-		"baseUrl": "src",                                  /* Specify the base directory to resolve non-relative module names. */
-    "rootDirs": ["src"],                                   /* Allow multiple folders to be treated as one when resolving modules. */
-		"skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
-		"skipLibCheck": true,                                 /* Skip type checking all .d.ts files. */
-		"sourceMap": true,                                /* Create source map files for emitted JavaScript files. */
-		"outDir": "dist",                                   /* Specify an output folder for all emitted files. */
-		"esModuleInterop": true,                             /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */
-		"forceConsistentCasingInFileNames": true,            /* Ensure that casing is correct in imports. */
-		"strict": true                                     /* Enable all strict type-checking options. */
+		"skipDefaultLibCheck": false,                      /* Skip type checking .d.ts files that are included with TypeScript. */
+		"skipLibCheck": false,                                 /* Skip type checking all .d.ts files. */
+		"sourceMap": true,                               /* Create source map files for emitted JavaScript files. */
+		// "forceConsistentCasingInFileNames": true            /* Ensure that casing is correct in imports. */
+		// "strict": true                                     /* Enable all strict type-checking options. */
     /* Visit https://aka.ms/tsconfig to read more about this file */
 
     /* Projects */
@@ -101,5 +101,6 @@
     // "allowUnreachableCode": true,                     /* Disable error reporting for unreachable code. */
 
     /* Completeness */
-  }
+  },
+	"include": ["src"]
 }
