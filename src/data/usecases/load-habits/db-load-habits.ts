@@ -9,10 +9,11 @@ export class DbLoadHabits implements LoadHabits {
 
 	async load (date: Date, weekDay: number): Promise<LoadHabits.Result> {
 		const possibleHabits = await this.loadPossibleHabitsRepository.loadByDateAndWeekDay(date, weekDay)
-		await this.loadCompletedHabitsRepository.loadByDate(date)
+		const completedHabits = await this.loadCompletedHabitsRepository.loadByDate(date)
 
 		return {
-			possibleHabits
+			possibleHabits,
+			completedHabits
 		}
 	}
 }

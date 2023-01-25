@@ -3,5 +3,5 @@ export interface LoadCompletedHabitsRepository {
 }
 
 export namespace LoadCompletedHabitsRepository {
-	export type Result = number[]
+	export type Result = string[]
 }

@@ -7,5 +7,6 @@ export interface LoadHabits {
 export namespace LoadHabits {
 	export type Result = {
 		possibleHabits: HabitModel[]
+		completedHabits: string[]
 	}
 }
