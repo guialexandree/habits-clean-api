@@ -1,4 +1,4 @@
-import { HabitModel } from '../habit'
+import { HabitModel } from '@/domain/model'
 
 export interface AddHabit {
 	add: (dataHabit: AddHabit.Params) => Promise<void>
