@@ -1,19 +1,22 @@
 import { DbLoadHabits } from './db-load-habits'
 import { throwError } from '@/domain/test'
-import { LoadPossibleHabitsRepositorySpy } from '@/data/test'
+import { LoadCompletedHabitsRepositorySpy, LoadPossibleHabitsRepositorySpy } from '@/data/test'
 
 type SutTypes = {
 	sut: DbLoadHabits
 	loadPossibleHabitsRepository: LoadPossibleHabitsRepositorySpy
+	loadCompletedHabitsRepository: LoadCompletedHabitsRepositorySpy
 }
 
 const makeSut = (): SutTypes => {
 	const loadPossibleHabitsRepository = new LoadPossibleHabitsRepositorySpy()
-	const sut = new DbLoadHabits(loadPossibleHabitsRepository)
+	const loadCompletedHabitsRepository = new LoadCompletedHabitsRepositorySpy()
+	const sut = new DbLoadHabits(loadPossibleHabitsRepository, loadCompletedHabitsRepository)
 
 	return {
 		sut,
-		loadPossibleHabitsRepository
+		loadPossibleHabitsRepository,
+		loadCompletedHabitsRepository
 	}
 }
 
@@ -47,7 +50,7 @@ describe('Caso de uso - Adicionar Hábito', () => {
 
 	test('Deve propagar o erro se dbAddHabitRepository lançar exceção', async () => {
 		const { sut, loadPossibleHabitsRepository } = makeSut()
-		jest.spyOn(loadPossibleHabitsRepository, 'load').mockImplementationOnce(throwError)
+		jest.spyOn(loadPossibleHabitsRepository, 'loadByDateAndWeekDay').mockImplementationOnce(throwError)
 		const getPossibleHabitsParams = {
 			date: new Date(),
 			weekDay: 1
@@ -56,5 +59,17 @@ describe('Caso de uso - Adicionar Hábito', () => {
 		const promise = sut.load(getPossibleHabitsParams.date, getPossibleHabitsParams.weekDay)
 
 		await expect(promise).rejects.toThrow()
+	})
+
+	test('Deve chamar completedHabitsRepository com os valores corretos', async () => {
+		const { sut, loadCompletedHabitsRepository } = makeSut()
+		const getPossibleHabitsParams = {
+			date: new Date(),
+			weekDay: 1
+		}
+
+		await sut.load(getPossibleHabitsParams.date, getPossibleHabitsParams.weekDay)
+
+		expect(loadCompletedHabitsRepository.date).toBe(getPossibleHabitsParams.date)
 	})
 })

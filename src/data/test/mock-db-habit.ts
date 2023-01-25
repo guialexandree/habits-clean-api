@@ -1,5 +1,5 @@
 import { AddHabit } from '@/domain/usecases'
-import { AddHabitRepository, LoadPossibleHabitsRepository } from '@/data/protocols'
+import { AddHabitRepository, LoadCompletedHabitsRepository, LoadPossibleHabitsRepository } from '@/data/protocols'
 import { mockLoadPossibleHabits } from '@/domain/test/mock-habits'
 
 export class AddHabitReposistorySpy implements AddHabitRepository {
@@ -16,9 +16,20 @@ export class LoadPossibleHabitsRepositorySpy implements LoadPossibleHabitsReposi
 	weekDay: number
 	result = mockLoadPossibleHabits()
 
-	async load (date: Date, weekDay: number): Promise<LoadPossibleHabitsRepository.Result> {
+	async loadByDateAndWeekDay (date: Date, weekDay: number): Promise<LoadPossibleHabitsRepository.Result> {
 		this.date = date
 		this.weekDay = weekDay
+
+		return this.result
+	}
+}
+
+export class LoadCompletedHabitsRepositorySpy implements LoadCompletedHabitsRepository {
+	date: Date
+	result = [1, 2, 3, 5, 8, 13]
+
+	async loadByDate (date: Date): Promise<LoadCompletedHabitsRepository.Result> {
+		this.date = date
 
 		return this.result
 	}
