@@ -3,3 +3,7 @@ export type HabitModel = {
 	title: string
 	createdAt: string
 }
+
+export type HabitResult = HabitModel & {
+	weekDays: number[]
+}
