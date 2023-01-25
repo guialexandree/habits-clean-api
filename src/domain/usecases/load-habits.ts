@@ -5,5 +5,7 @@ export interface LoadHabits {
 }
 
 export namespace LoadHabits {
-	export type Result = HabitModel[]
+	export type Result = {
+		possibleHabits: HabitModel[]
+	}
 }
