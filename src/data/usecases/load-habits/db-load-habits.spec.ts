@@ -74,7 +74,7 @@ describe('Caso de uso - Adicionar Hábito', () => {
 			expect(loadCompletedHabitsRepository.date).toBe(getCompletedHabitsParams.date)
 		})
 
-		test('LoadPossibleHabitsRepository deve retornar uma lista de ids realizados', async () => {
+		test('LoadCompletedHabitsRepository deve retornar uma lista de ids realizados', async () => {
 			const { sut, loadCompletedHabitsRepository } = makeSut()
 			const getCompletedHabitsParams = {
 				date: new Date(),
