@@ -1,12 +1,13 @@
-import { ValidationSpy } from '@/presentation/test'
 import { AddHabitController } from './add-habit-controller'
-import { badRequest, serverError } from '@/presentation/helpers'
 import { throwError } from '@/domain/test'
+import { DbAddHabitSpy, ValidationSpy } from '@/presentation/test'
+import { badRequest, created, serverError } from '@/presentation/helpers'
+import MockDate from 'mockdate'
 import faker from 'faker'
 
 const mockRequest = (): AddHabitController.Request => {
   return {
-    title: faker.random.words(5),
+    title: faker.random.words(3),
 		weekDays: [2, 4, 0]
   }
 }
@@ -14,19 +15,30 @@ const mockRequest = (): AddHabitController.Request => {
 type SutTypes = {
 	sut: AddHabitController
 	validationSpy: ValidationSpy
+	dbAddHabitSpy: DbAddHabitSpy
 }
 
 const makeSut = (): SutTypes => {
 	const validationSpy = new ValidationSpy()
-	const sut = new AddHabitController(validationSpy)
+	const dbAddHabitSpy = new DbAddHabitSpy()
+	const sut = new AddHabitController(validationSpy, dbAddHabitSpy)
 
 	return {
 		sut,
-		validationSpy
+		validationSpy,
+		dbAddHabitSpy
 	}
 }
 
 describe('AddHabit Controller', () => {
+	beforeAll(() => {
+		MockDate.set(new Date())
+	})
+
+	afterAll(() => {
+		MockDate.reset()
+	})
+
 	test('Deve chamar Validation com os valores corretos', async () => {
     const { sut, validationSpy } = makeSut()
     const request = mockRequest()
@@ -34,6 +46,19 @@ describe('AddHabit Controller', () => {
     await sut.handle(request)
 
     expect(validationSpy.input).toEqual(request)
+  })
+
+	test('Deve chamar AddHabit com os valores corretos', async () => {
+    const { sut, dbAddHabitSpy } = makeSut()
+    const request = mockRequest()
+
+    await sut.handle(request)
+		console.log('addHabitParams', dbAddHabitSpy.addHabitParams)
+		console.log('request', request)
+    expect(dbAddHabitSpy.addHabitParams).toEqual({
+			...request,
+			createdAt: new Date()
+		})
   })
 
 	test('Deve retornar status 400 se Validation falhar', async () => {
@@ -54,5 +79,13 @@ describe('AddHabit Controller', () => {
     const response = await sut.handle(mockRequest())
 
     expect(response).toEqual(serverError(new Error()))
+  })
+
+	test('Deve retornar status 201 quando criado com sucesso', async () => {
+    const { sut } = makeSut()
+
+    const response = await sut.handle(mockRequest())
+
+    expect(response).toEqual(created())
   })
 })

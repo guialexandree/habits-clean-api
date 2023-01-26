@@ -1,6 +1,7 @@
 import { DbAddHabit } from './db-add-habit'
 import { throwError } from '@/domain/test'
 import { AddHabitReposistorySpy } from '@/data/test'
+import MockDate from 'mockdate'
 
 type SutTypes = {
 	sut: DbAddHabit
@@ -18,11 +19,20 @@ const makeSut = (): SutTypes => {
 }
 
 describe('Caso de uso - Adicionar Hábito', () => {
+	beforeAll(() => {
+		MockDate.set(new Date())
+	})
+
+	afterAll(() => {
+		MockDate.reset()
+	})
+
 	test('Deve chamar dbAddHabitRepository com os valores corretos', async () => {
 		const { sut, dbAddReposistorySpy } = makeSut()
 		const addHabitParams = {
 			title: 'txt01',
-			createdAt: new Date().toISOString()
+			createdAt: new Date(),
+			weekDays: [0, 2]
 		}
 
 		await sut.add(addHabitParams)
@@ -35,7 +45,8 @@ describe('Caso de uso - Adicionar Hábito', () => {
 		jest.spyOn(dbAddReposistorySpy, 'add').mockImplementationOnce(throwError)
 		const addHabitParams = {
 			title: 'txt01',
-			createdAt: new Date().toISOString()
+			createdAt: new Date(),
+			weekDays: [0, 2]
 		}
 
 		const promise = sut.add(addHabitParams)

@@ -4,7 +4,7 @@ import { HabitModel, HabitResult } from '@/domain/model'
 export const mockHabitModel = (): HabitModel => ({
 	id: faker.datatype.uuid(),
 	title: faker.random.words(5),
-	createdAt: faker.date.recent().toISOString()
+	createdAt: faker.date.recent()
 })
 
 export const mockLoadPossibleHabits = (): HabitResult[] =>
