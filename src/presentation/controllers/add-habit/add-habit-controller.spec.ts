@@ -1,5 +1,6 @@
 import { ValidationSpy } from '@/presentation/test'
 import { AddHabitController } from './add-habit-controller'
+import { badRequest } from '@/presentation/helpers'
 import faker from 'faker'
 
 const mockRequest = (): AddHabitController.Request => {
@@ -32,5 +33,14 @@ describe('AddHabit Controller', () => {
     await sut.handle(request)
 
     expect(validationSpy.input).toEqual(request)
+  })
+
+	test('Deve retornar status 400 se Validation falhar', async () => {
+    const { sut, validationSpy } = makeSut()
+    validationSpy.error = new Error()
+
+    const httpResponse = await sut.handle(mockRequest())
+
+    expect(httpResponse).toEqual(badRequest(validationSpy.error))
   })
 })
