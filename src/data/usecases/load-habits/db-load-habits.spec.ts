@@ -99,4 +99,21 @@ describe('Caso de uso - Adicionar Hábito', () => {
 			await expect(promise).rejects.toThrow()
 		})
 	})
+
+	test('Deve retornar objetos com lista vazia caso não retorno dos repos', async () => {
+		const { sut, loadCompletedHabitsRepository, loadPossibleHabitsRepository } = makeSut()
+			loadCompletedHabitsRepository.result = []
+			loadPossibleHabitsRepository.result = []
+			const getCompletedHabitsParams = {
+				date: new Date(),
+				weekDay: 1
+			}
+
+			const result = await sut.load(getCompletedHabitsParams.date, getCompletedHabitsParams.weekDay)
+
+			expect(result).toEqual({
+				possibleHabits: [],
+				completedHabits: []
+			})
+	})
 })
