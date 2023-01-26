@@ -53,8 +53,7 @@ describe('AddHabit Controller', () => {
     const request = mockRequest()
 
     await sut.handle(request)
-		console.log('addHabitParams', dbAddHabitSpy.addHabitParams)
-		console.log('request', request)
+
     expect(dbAddHabitSpy.addHabitParams).toEqual({
 			...request,
 			createdAt: new Date()
