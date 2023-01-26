@@ -1,6 +1,7 @@
 import { ValidationSpy } from '@/presentation/test'
 import { AddHabitController } from './add-habit-controller'
-import { badRequest } from '@/presentation/helpers'
+import { badRequest, serverError } from '@/presentation/helpers'
+import { throwError } from '@/domain/test'
 import faker from 'faker'
 
 const mockRequest = (): AddHabitController.Request => {
@@ -42,5 +43,16 @@ describe('AddHabit Controller', () => {
     const httpResponse = await sut.handle(mockRequest())
 
     expect(httpResponse).toEqual(badRequest(validationSpy.error))
+  })
+
+	test('Deve retornar status 500 se Validation lançar exceção', async () => {
+    const { sut, validationSpy } = makeSut()
+    jest
+      .spyOn(validationSpy, 'validate')
+      .mockImplementationOnce(throwError)
+
+    const response = await sut.handle(mockRequest())
+
+    expect(response).toEqual(serverError(new Error()))
   })
 })
