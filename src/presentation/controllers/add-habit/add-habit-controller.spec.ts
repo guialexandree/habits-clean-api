@@ -69,6 +69,17 @@ describe('AddHabit Controller', () => {
     expect(httpResponse).toEqual(badRequest(validationSpy.error))
   })
 
+	test('Deve retornar status 500 se AddHabit lançar exceção', async () => {
+    const { sut, dbAddHabitSpy } = makeSut()
+    jest
+      .spyOn(dbAddHabitSpy, 'add')
+      .mockImplementationOnce(throwError)
+
+    const response = await sut.handle(mockRequest())
+
+    expect(response).toEqual(serverError(new Error()))
+  })
+
 	test('Deve retornar status 500 se Validation lançar exceção', async () => {
     const { sut, validationSpy } = makeSut()
     jest
