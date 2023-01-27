@@ -6,9 +6,9 @@ import faker from 'faker'
 export class AddHabitReposistorySpy implements AddHabitRepository {
 	addHabitParams!: AddHabit.Params
 
-	async add (dataHabit: AddHabit.Params): Promise<void> {
+	async add (dataHabit: AddHabit.Params): Promise<AddHabitRepository.Result> {
 		this.addHabitParams = dataHabit
-		await Promise.resolve()
+		return { id: faker.datatype.uuid() }
 	}
 }
 
