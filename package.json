@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-		"pre-commit": "lint-staged",
+    "pre-commit": "lint-staged",
     "start": "sucrase-node src/main/server.ts",
     "test": "jest --passWithNoTests --noStackTrace --runInBand",
     "test:clear": "jest --passWithNoTests --noStackTrace --runInBand --clearCache",
@@ -16,27 +16,34 @@
     "test:ci": "npm test -- --coverage",
     "pretest:coveralls": "npm run test:ci",
     "test:coveralls": "coveralls < coverage/lcov.info",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "migration": "npx prisma migrate dev"
   },
   "keywords": [],
   "author": "Guilherme Alexandre Rocha Pereira",
   "license": "GPL-3.0-or-later",
   "devDependencies": {
     "@shelf/jest-mongodb": "^4.1.6",
+    "@types/faker": "^5.5.3",
     "@types/jest": "^29.2.6",
     "@types/mongodb": "^4.0.7",
     "@types/node": "^18.11.18",
+    "@types/supertest": "^2.0.12",
     "@typescript-eslint/eslint-plugin": "^5.49.0",
     "@typescript-eslint/parser": "^5.49.0",
+    "dotenv": "^16.0.3",
     "eslint": "^8.32.0",
     "eslint-config-standard-with-typescript": "^32.0.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-n": "^15.6.1",
     "eslint-plugin-promise": "^6.1.1",
+    "faker": "^5.5.3",
     "git-commit-msg-linter": "^4.5.0",
     "husky": "^8.0.0",
     "jest": "^29.4.0",
     "lint-staged": "^13.1.0",
+    "mockdate": "^3.0.5",
+    "prisma": "^4.9.0",
     "sucrase": "^3.29.0",
     "supertest": "^6.3.3",
     "ts-jest": "^29.0.5",
@@ -44,6 +51,7 @@
     "typescript": "^4.9.4"
   },
   "dependencies": {
+    "@prisma/client": "^4.9.0",
     "mongodb": "^4.13.0"
   },
   "_moduleAliases": {
