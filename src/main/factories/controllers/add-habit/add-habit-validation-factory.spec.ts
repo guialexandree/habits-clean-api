@@ -1,5 +1,5 @@
 import { Validation } from '@/presentation/protocols'
-import { RequiredFieldValidation, ValidationComposite } from '@/validation/validators'
+import { RequiredArrayValidation, RequiredFieldValidation, ValidationComposite } from '@/validation/validators'
 import { makeHabitValidation } from '@/main/factories/controllers'
 
 jest.mock('@/validation/validators/validation-composite/validation-composite')
@@ -9,9 +9,11 @@ describe('HabitValidation Factory', () => {
     makeHabitValidation()
     const validations: Validation[] = []
 
-    for (const field of ['title', 'weekDays']) {
+    for (const field of ['title']) {
       validations.push(new RequiredFieldValidation(field))
     }
+
+		validations.push(new RequiredArrayValidation('weekDays'))
 
     expect(ValidationComposite).toHaveBeenCalledWith(validations)
   })
