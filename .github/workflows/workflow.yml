@@ -1,10 +1,10 @@
 on: ["push", "pull_request"]
 
-name: Test Coveralls
+name: Coverage
 
 jobs:
   build:
-    name: Build
+    name: test
     runs-on: ubuntu-latest
     steps:
 
@@ -18,7 +18,7 @@ jobs:
     - name: npm install, make test-coverage
       run: |
         npm install
-        npm run test:coveralls
+        npm run test:ci
 
     - name: Coveralls
       uses: coverallsapp/github-action@master
