@@ -4,13 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "pre-commit": "lint-staged",
     "start": "sucrase-node src/main/server.ts",
-    "test": "jest --passWithNoTests --noStackTrace --runInBand",
+		"build": "tsc -p tsconfig-build.json",
+    "pre-commit": "lint-staged",
+    "test": "jest --passWithNoTests --runInBand",
     "test:clear": "jest --passWithNoTests --noStackTrace --runInBand --clearCache",
     "test:dev": "jest --passWithNoTests -c jest-unit-config.js",
     "test:verbose": "jest --passWithNoTests",
-    "test:unit": "npm test -- --watch --noStackTrace -c jest-unit-config.js",
+    "test:unit": "npm test -- --watch -c jest-unit-config.js",
     "test:integration": "npm test -- -c jest-integration-config.js",
     "test:staged": "npm test -- --findRelatedTests ./src",
     "test:ci": "npm test -- --coverage",
@@ -51,10 +52,13 @@
     "typescript": "^4.9.4"
   },
   "dependencies": {
+    "@fastify/cors": "^8.2.0",
     "@prisma/client": "^4.9.0",
+    "fastify": "^4.12.0",
+    "module-alias": "^2.2.2",
     "mongodb": "^4.13.0"
   },
   "_moduleAliases": {
-    "@": "dist"
+    "@": "src"
   }
 }
