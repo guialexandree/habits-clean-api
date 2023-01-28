@@ -1,7 +1,8 @@
 import { FastifyInstance } from 'fastify'
 import { adaptRoute } from '@/main/adapters'
-import { makeHabitController } from '@/main/factories'
+import { makeAddHabitController, makeLoadHabitsController } from '@/main/factories'
 
 export default (app: FastifyInstance): void => {
-	app.post('/habits', adaptRoute(makeHabitController()))
+	app.post('/habits', adaptRoute(makeAddHabitController()))
+	app.get('/habits', adaptRoute(makeLoadHabitsController()))
 }
