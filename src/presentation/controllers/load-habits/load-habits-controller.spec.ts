@@ -1,5 +1,5 @@
 import { LoadHabitsController } from './load-habits-controller'
-import { ValidationSpy } from '@/presentation/test'
+import { DbLoadHabitsSpy, ValidationSpy } from '@/presentation/test'
 import { badRequest, serverError } from '@/presentation/helpers'
 import MockDate from 'mockdate'
 import faker from 'faker'
@@ -12,15 +12,18 @@ const mockRequest = (): LoadHabitsController.Request => ({
 type SutTypes = {
 	sut: LoadHabitsController
 	validationSpy: ValidationSpy
+	dbLoadHabitsSpy: DbLoadHabitsSpy
 }
 
 const makeSut = (): SutTypes => {
 	const validationSpy = new ValidationSpy()
-	const sut = new LoadHabitsController(validationSpy)
+	const dbLoadHabitsSpy = new DbLoadHabitsSpy()
+	const sut = new LoadHabitsController(validationSpy, dbLoadHabitsSpy)
 
 	return {
 		sut,
-		validationSpy
+		validationSpy,
+		dbLoadHabitsSpy
 	}
 }
 
@@ -40,6 +43,15 @@ describe('AddHabit Controller', () => {
     await sut.handle(request)
 
     expect(validationSpy.input).toEqual(request)
+  })
+
+	test('Deve chamar LoadHabits com a data correta', async () => {
+    const { sut, dbLoadHabitsSpy } = makeSut()
+    const request = mockRequest()
+
+    await sut.handle(request)
+
+    expect(dbLoadHabitsSpy.dateParams.toISOString()).toBe(request.date)
   })
 
 	test('Deve retornar status 400 se Validation falhar', async () => {
