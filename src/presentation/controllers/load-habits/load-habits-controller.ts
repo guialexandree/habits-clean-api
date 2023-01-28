@@ -1,5 +1,5 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, serverError } from '@/presentation/helpers'
+import { badRequest, ok, serverError } from '@/presentation/helpers'
 import { LoadHabits } from '@/domain/usecases'
 
 export class LoadHabitsController implements Controller {
@@ -17,7 +17,8 @@ export class LoadHabitsController implements Controller {
 
 			const { date } = request
 			const parsedDate = new Date(date)
-			await this.dbLoadHabits.load(parsedDate)
+			const habits = await this.dbLoadHabits.load(parsedDate)
+			return ok(habits)
 		} catch (error) {
 			return serverError(error)
 		}
