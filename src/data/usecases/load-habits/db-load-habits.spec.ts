@@ -79,6 +79,19 @@ describe('Caso de uso - Adicionar Hábito', () => {
 		})
 	})
 
+	test('Deve retornar objetos com array vazio se repos retornar undefined', async () => {
+		const { sut, loadCompletedHabitsRepositorySpy, loadPossibleHabitsRepositorySpy } = makeSut()
+			loadCompletedHabitsRepositorySpy.result = undefined
+			loadPossibleHabitsRepositorySpy.result = undefined
+
+			const result = await sut.load(new Date())
+
+			expect(result).toEqual({
+				possibleHabits: [],
+				completedHabits: []
+			})
+	})
+
 	test('Deve retornar objetos com array vazio se repos retornar null', async () => {
 		const { sut, loadCompletedHabitsRepositorySpy, loadPossibleHabitsRepositorySpy } = makeSut()
 			loadCompletedHabitsRepositorySpy.result = null
