@@ -41,7 +41,7 @@ export class HabitSqliteRepository implements AddHabitRepository, LoadPossibleHa
 			}
 		})
 
-		return list && SqliteHelper.mapCollection(list)
+		return list?.length && SqliteHelper.mapCollection(list)
 	}
 
 	async loadByDate (date: Date): Promise<LoadCompletedHabitsRepository.Result> {
@@ -54,6 +54,6 @@ export class HabitSqliteRepository implements AddHabitRepository, LoadPossibleHa
       }
     })
 
-		return day.dayHabits.map(item => item.habit_id)
+		return day?.dayHabits && day?.dayHabits.map(item => item.habit_id)
 	}
 }
