@@ -5,8 +5,18 @@ import faker from 'faker'
 import MockDate from 'mockdate'
 import { WeekDay } from '@/main/types'
 
-const createNewHabit = async (createdAt = faker.date.recent(), weekDay: number): Promise<void> => {
-	await prismaClient.habit.create({
+const createDay = async (createdAt: Date): Promise<string> => {
+	const { id } = await prismaClient.day.create({
+		data: {
+			date: createdAt
+		}
+	})
+
+	return id
+}
+
+const createNewHabit = async (createdAt = faker.date.recent(), weekDay: number, dayId?: string): Promise<string> => {
+	const { id } = await prismaClient.habit.create({
 		data: {
 			title: faker.random.words(4),
 			created_at: createdAt,
@@ -14,9 +24,18 @@ const createNewHabit = async (createdAt = faker.date.recent(), weekDay: number):
 				create: {
 					week_day: weekDay
 				}
-			}
+			},
+			...(dayId && {
+				dayHabits: {
+					create: {
+						day_id: dayId
+					}
+				}
+			})
 		}
 	})
+
+	return id
 }
 
 const makeAddHabitParams = (): AddHabit.Params => ({
@@ -43,6 +62,8 @@ const makeSut = (): SutTypes => {
 
 describe('Habit Sqlite Repository', () => {
 	beforeAll(async () => {
+		await prismaClient.dayHabit.deleteMany({})
+		await prismaClient.day.deleteMany({})
 		await prismaClient.habitWeekDay.deleteMany({})
 		await prismaClient.habit.deleteMany({})
 		MockDate.set(new Date())
@@ -92,5 +113,17 @@ describe('Habit Sqlite Repository', () => {
 		const list = await sut.loadByDateAndWeekDay(searchDate, weekDay)
 		expect(list.length).toBe(0)
 		expect(list).toEqual([])
+	})
+
+	describe('loadByDate()', () => {
+		test('Deve retornar lista de string com id dos hábitos completados na data', async () => {
+			const { sut } = makeSut()
+			const searchDate = new Date('2023-01-23')
+			const dayId = await createDay(searchDate)
+			const habitId = await createNewHabit(searchDate, 0, dayId)
+
+			const list = await sut.loadByDate(searchDate)
+			expect(list[0]).toBe(habitId)
+		})
 	})
 })
