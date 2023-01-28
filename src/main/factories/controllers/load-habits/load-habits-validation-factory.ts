@@ -1,5 +1,6 @@
+import { DateValidatorAdapter } from '@/infra/validators'
 import { Validation } from '@/presentation/protocols'
-import { RequiredFieldValidation, ValidationComposite } from '@/validation/validators'
+import { DateFieldValidation, RequiredFieldValidation, ValidationComposite } from '@/validation/validators'
 
 export const makeLoadHabitsValidation = (): ValidationComposite => {
 	const validations: Validation[] = []
@@ -7,6 +8,8 @@ export const makeLoadHabitsValidation = (): ValidationComposite => {
 	for (const field of ['date']) {
 		validations.push(new RequiredFieldValidation(field))
 	}
+
+	validations.push(new DateFieldValidation('date', new DateValidatorAdapter()))
 
 	return new ValidationComposite(validations)
 }
