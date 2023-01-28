@@ -1,1 +1,1 @@
-export * from './db-add-habit-controller-factory'
+export * from './db-add-habit-factory'

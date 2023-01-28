@@ -41,6 +41,6 @@ export class HabitSqliteRepository implements AddHabitRepository, LoadPossibleHa
 			}
 		})
 
-		return SqliteHelper.mapCollection(list)
+		return list && SqliteHelper.mapCollection(list)
 	}
 }

@@ -12,8 +12,8 @@ export class DbLoadHabits implements LoadHabits {
 		const completedHabits = await this.loadCompletedHabitsRepository.loadByDate(date)
 
 		return {
-			possibleHabits,
-			completedHabits
+			possibleHabits: possibleHabits || [],
+			completedHabits: completedHabits || []
 		}
 	}
 }
