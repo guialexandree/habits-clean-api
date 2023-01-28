@@ -1,6 +1,6 @@
 import { LoadHabitsController } from './load-habits-controller'
 import { DbLoadHabitsSpy, ValidationSpy } from '@/presentation/test'
-import { badRequest, serverError } from '@/presentation/helpers'
+import { badRequest, ok, serverError } from '@/presentation/helpers'
 import MockDate from 'mockdate'
 import faker from 'faker'
 import { throwError } from '@/domain/test'
@@ -72,5 +72,13 @@ describe('AddHabit Controller', () => {
     const response = await sut.handle(mockRequest())
 
     expect(response).toEqual(serverError(new Error()))
+  })
+
+	test('Deve retornar status 202 com a lista de hábitos', async () => {
+    const { sut, dbLoadHabitsSpy } = makeSut()
+
+    const response = await sut.handle(mockRequest())
+
+    expect(response).toEqual(ok(dbLoadHabitsSpy.result))
   })
 })
