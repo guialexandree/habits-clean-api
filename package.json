@@ -58,5 +58,8 @@
   },
   "_moduleAliases": {
     "@": "src"
+  },
+	"engines": {
+    "node": "16.18.x"
   }
 }
