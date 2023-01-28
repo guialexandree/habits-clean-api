@@ -1,6 +1,7 @@
 import { DbLoadHabits } from './db-load-habits'
 import { throwError } from '@/domain/test'
 import { LoadCompletedHabitsRepositorySpy, LoadPossibleHabitsRepositorySpy } from '@/data/test'
+import { WeekDay } from '@/main/types'
 
 type SutTypes = {
 	sut: DbLoadHabits
@@ -26,7 +27,7 @@ describe('Caso de uso - Adicionar Hábito', () => {
 			const { sut, loadPossibleHabitsRepository } = makeSut()
 			const getPossibleHabitsParams = {
 				date: new Date(),
-				weekDay: 1
+				weekDay: WeekDay.MONDAY
 			}
 
 			await sut.load(getPossibleHabitsParams.date, getPossibleHabitsParams.weekDay)
@@ -39,7 +40,7 @@ describe('Caso de uso - Adicionar Hábito', () => {
 			const { sut, loadPossibleHabitsRepository } = makeSut()
 			const getPossibleHabitsParams = {
 				date: new Date(),
-				weekDay: 1
+				weekDay: WeekDay.MONDAY
 			}
 
 			const { possibleHabits } = await sut.load(getPossibleHabitsParams.date, getPossibleHabitsParams.weekDay)
@@ -52,7 +53,7 @@ describe('Caso de uso - Adicionar Hábito', () => {
 			jest.spyOn(loadPossibleHabitsRepository, 'loadByDateAndWeekDay').mockImplementationOnce(throwError)
 			const getPossibleHabitsParams = {
 				date: new Date(),
-				weekDay: 1
+				weekDay: WeekDay.MONDAY
 			}
 
 			const promise = sut.load(getPossibleHabitsParams.date, getPossibleHabitsParams.weekDay)
@@ -66,7 +67,7 @@ describe('Caso de uso - Adicionar Hábito', () => {
 			const { sut, loadCompletedHabitsRepository } = makeSut()
 			const getCompletedHabitsParams = {
 				date: new Date(),
-				weekDay: 1
+				weekDay: WeekDay.MONDAY
 			}
 
 			await sut.load(getCompletedHabitsParams.date, getCompletedHabitsParams.weekDay)
@@ -78,7 +79,7 @@ describe('Caso de uso - Adicionar Hábito', () => {
 			const { sut, loadCompletedHabitsRepository } = makeSut()
 			const getCompletedHabitsParams = {
 				date: new Date(),
-				weekDay: 1
+				weekDay: WeekDay.MONDAY
 			}
 
 			const { completedHabits } = await sut.load(getCompletedHabitsParams.date, getCompletedHabitsParams.weekDay)
@@ -100,13 +101,13 @@ describe('Caso de uso - Adicionar Hábito', () => {
 		})
 	})
 
-	test('Deve retornar objetos com lista vazia caso não retorno dos repos', async () => {
+	test('Deve retornar objetos com array vazio se repos retornar null', async () => {
 		const { sut, loadCompletedHabitsRepository, loadPossibleHabitsRepository } = makeSut()
-			loadCompletedHabitsRepository.result = []
-			loadPossibleHabitsRepository.result = []
+			loadCompletedHabitsRepository.result = null
+			loadPossibleHabitsRepository.result = null
 			const getCompletedHabitsParams = {
 				date: new Date(),
-				weekDay: 1
+				weekDay: WeekDay.MONDAY
 			}
 
 			const result = await sut.load(getCompletedHabitsParams.date, getCompletedHabitsParams.weekDay)
