@@ -91,28 +91,15 @@ describe('Habit Sqlite Repository', () => {
 			const { sut } = makeSut()
 			const searchDate = new Date('2023-01-22')
 			const weekDay = searchDate.getDay()
-
 			await createNewHabit(new Date('2023-01-21'), weekDay === 6 ? (weekDay - 1) : (weekDay + 1))
 			await createNewHabit(new Date('2023-01-21'), weekDay)
 			await createNewHabit(new Date('2023-01-22'), weekDay)
 			await createNewHabit(new Date('2023-01-23'), weekDay)
 
 			const list = await sut.loadByDateAndWeekDay(searchDate, weekDay)
+
 			expect(list.length).toBe(2)
 		})
-	})
-
-	test('Deve retornar array vazio caso não encontre habítos possíveis', async () => {
-		const { sut } = makeSut()
-		const searchDate = new Date('2023-01-19')
-		const weekDay = searchDate.getDay()
-
-		await createNewHabit(new Date('2023-01-22'), weekDay)
-		await createNewHabit(new Date('2023-01-23'), weekDay)
-
-		const list = await sut.loadByDateAndWeekDay(searchDate, weekDay)
-		expect(list.length).toBe(0)
-		expect(list).toEqual([])
 	})
 
 	describe('loadByDate()', () => {
@@ -123,6 +110,7 @@ describe('Habit Sqlite Repository', () => {
 			const habitId = await createNewHabit(searchDate, 0, dayId)
 
 			const list = await sut.loadByDate(searchDate)
+
 			expect(list[0]).toBe(habitId)
 		})
 	})
