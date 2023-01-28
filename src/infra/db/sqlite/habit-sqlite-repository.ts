@@ -1,8 +1,9 @@
 import { AddHabit } from '@/domain/usecases'
-import { AddHabitRepository } from '@/data/protocols'
+import { AddHabitRepository, LoadPossibleHabitsRepository } from '@/data/protocols'
 import { prismaClient } from './prisma-client'
+import { SqliteHelper } from './sqlite-helper'
 
-export class HabitSqliteRepository implements AddHabitRepository {
+export class HabitSqliteRepository implements AddHabitRepository, LoadPossibleHabitsRepository {
 	async add (data: AddHabit.Params): Promise<AddHabitRepository.Result> {
 		const { title, createdAt, weekDays } = data
 
@@ -21,5 +22,25 @@ export class HabitSqliteRepository implements AddHabitRepository {
 		})
 
 		return { id }
+	}
+
+	async loadByDateAndWeekDay (date: Date, weekDay: number): Promise<LoadPossibleHabitsRepository.Result> {
+		const list = await prismaClient.habit.findMany({
+			where: {
+				created_at: {
+					lte: date
+				},
+				weekDays: {
+					some: {
+						week_day: weekDay
+					}
+				}
+			},
+			include: {
+				weekDays: true
+			}
+		})
+
+		return SqliteHelper.mapCollection(list)
 	}
 }
