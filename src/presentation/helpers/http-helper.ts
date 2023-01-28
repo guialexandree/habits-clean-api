@@ -11,11 +11,6 @@ export const serverError = (error: Error): HttpResponse => ({
   body: new InternalServerError(error.stack)
 })
 
-export const noContent = (): HttpResponse => ({
-  statusCode: 204,
-  body: null
-})
-
 export const created = (): HttpResponse => ({
   statusCode: 201,
   body: null
