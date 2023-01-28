@@ -9,7 +9,7 @@ Durante a semana NLW realizada pela **RocketSeat** para comunidade dev, foram de
 tem a finalidade de Gerenciar hábitos diários.
 Conforme sugerido pelo Diego ao final da semana deveríamos dar um passo além nos projetos e incluir mais funcionalidades.
 
-## Repositório do projetos desenvolvidos no evento:
+## Repositório dos projetos desenvolvidos no evento
 - API - NodeJs, Fastify, Sqlite [🔗](https://github.com/guialexandree/rocketseat-nlw-setup-backend)
 - Web - React [🔗](https://github.com/guialexandree/rocketseat-nlw-setup-web)
 - Mobile - React Native [🔗](https://github.com/guialexandree/rocketseat-nlw-setup-mobile)
