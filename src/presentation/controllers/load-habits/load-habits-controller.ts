@@ -1,5 +1,5 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest } from '@/presentation/helpers'
+import { badRequest, serverError } from '@/presentation/helpers'
 
 export class LoadHabitsController implements Controller {
 	constructor (
@@ -7,9 +7,13 @@ export class LoadHabitsController implements Controller {
 	) {}
 
 	async handle (request: LoadHabitsController.Request): Promise<HttpResponse> {
-		const error = this.validation.validate(request)
-		if (error) {
-			return badRequest(error)
+		try {
+			const error = this.validation.validate(request)
+			if (error) {
+				return badRequest(error)
+			}
+		} catch (error) {
+			return serverError(error)
 		}
 	}
 }
