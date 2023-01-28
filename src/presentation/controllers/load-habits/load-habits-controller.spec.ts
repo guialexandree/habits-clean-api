@@ -1,9 +1,9 @@
 import { LoadHabitsController } from './load-habits-controller'
 import { DbLoadHabitsSpy, ValidationSpy } from '@/presentation/test'
 import { badRequest, ok, serverError } from '@/presentation/helpers'
+import { throwError } from '@/domain/test'
 import MockDate from 'mockdate'
 import faker from 'faker'
-import { throwError } from '@/domain/test'
 
 const mockRequest = (): LoadHabitsController.Request => ({
 	date: faker.date.recent().toISOString()
