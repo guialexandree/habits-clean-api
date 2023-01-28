@@ -54,6 +54,6 @@ export class HabitSqliteRepository implements AddHabitRepository, LoadPossibleHa
       }
     })
 
-		return day?.dayHabits && day?.dayHabits.map(item => item.habit_id)
+		return day.dayHabits.map(item => item.habit_id)
 	}
 }
