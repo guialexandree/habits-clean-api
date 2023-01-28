@@ -1,12 +1,12 @@
 import { Validation } from '@/presentation/protocols'
 import { RequiredArrayValidation, RequiredFieldValidation, ValidationComposite } from '@/validation/validators'
-import { makeHabitValidation } from '@/main/factories/controllers'
+import { makeAddHabitValidation } from '@/main/factories/controllers'
 
 jest.mock('@/validation/validators/validation-composite/validation-composite')
 
-describe('HabitValidation Factory', () => {
+describe('AddHabitValidation Factory', () => {
   test('Deve chamar ValidationComposite com as validações corretas', () => {
-    makeHabitValidation()
+    makeAddHabitValidation()
     const validations: Validation[] = []
 
     for (const field of ['title']) {

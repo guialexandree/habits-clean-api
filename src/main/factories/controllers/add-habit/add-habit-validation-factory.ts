@@ -1,7 +1,7 @@
 import { Validation } from '@/presentation/protocols'
 import { RequiredArrayValidation, RequiredFieldValidation, ValidationComposite } from '@/validation/validators'
 
-export const makeHabitValidation = (): ValidationComposite => {
+export const makeAddHabitValidation = (): ValidationComposite => {
 	const validations: Validation[] = []
 
 	for (const field of ['title']) {
