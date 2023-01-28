@@ -1,116 +1,90 @@
 import { DbLoadHabits } from './db-load-habits'
 import { throwError } from '@/domain/test'
 import { LoadCompletedHabitsRepositorySpy, LoadPossibleHabitsRepositorySpy } from '@/data/test'
-import { WeekDay } from '@/main/types'
 
 type SutTypes = {
 	sut: DbLoadHabits
-	loadPossibleHabitsRepository: LoadPossibleHabitsRepositorySpy
-	loadCompletedHabitsRepository: LoadCompletedHabitsRepositorySpy
+	loadPossibleHabitsRepositorySpy: LoadPossibleHabitsRepositorySpy
+	loadCompletedHabitsRepositorySpy: LoadCompletedHabitsRepositorySpy
 }
 
 const makeSut = (): SutTypes => {
-	const loadPossibleHabitsRepository = new LoadPossibleHabitsRepositorySpy()
-	const loadCompletedHabitsRepository = new LoadCompletedHabitsRepositorySpy()
-	const sut = new DbLoadHabits(loadPossibleHabitsRepository, loadCompletedHabitsRepository)
+	const loadPossibleHabitsRepositorySpy = new LoadPossibleHabitsRepositorySpy()
+	const loadCompletedHabitsRepositorySpy = new LoadCompletedHabitsRepositorySpy()
+	const sut = new DbLoadHabits(loadPossibleHabitsRepositorySpy, loadCompletedHabitsRepositorySpy)
 
 	return {
 		sut,
-		loadPossibleHabitsRepository,
-		loadCompletedHabitsRepository
+		loadPossibleHabitsRepositorySpy,
+		loadCompletedHabitsRepositorySpy
 	}
 }
 
 describe('Caso de uso - Adicionar Hábito', () => {
 	describe('loadPossibleHabitsRepository()', () => {
 		test('Deve chamar loadPossibleHabitsRepository com os valores corretos', async () => {
-			const { sut, loadPossibleHabitsRepository } = makeSut()
-			const getPossibleHabitsParams = {
-				date: new Date(),
-				weekDay: WeekDay.MONDAY
-			}
+			const { sut, loadPossibleHabitsRepositorySpy } = makeSut()
+			const date = new Date()
 
-			await sut.load(getPossibleHabitsParams.date, getPossibleHabitsParams.weekDay)
+			await sut.load(date)
 
-			expect(loadPossibleHabitsRepository.date).toBe(getPossibleHabitsParams.date)
-			expect(loadPossibleHabitsRepository.weekDay).toBe(getPossibleHabitsParams.weekDay)
+			expect(loadPossibleHabitsRepositorySpy.date).toBe(date)
 		})
 
 		test('LoadPossibleHabitsRepository deve retornar uma lista de hábitos possíveis', async () => {
-			const { sut, loadPossibleHabitsRepository } = makeSut()
-			const getPossibleHabitsParams = {
-				date: new Date(),
-				weekDay: WeekDay.MONDAY
-			}
+			const { sut, loadPossibleHabitsRepositorySpy } = makeSut()
+			const date = new Date()
 
-			const { possibleHabits } = await sut.load(getPossibleHabitsParams.date, getPossibleHabitsParams.weekDay)
+			const { possibleHabits } = await sut.load(date)
 
-			expect(possibleHabits).toEqual(loadPossibleHabitsRepository.result)
+			expect(possibleHabits).toEqual(loadPossibleHabitsRepositorySpy.result)
 		})
 
 		test('Deve propagar o erro se dbAddHabitRepository lançar exceção', async () => {
-			const { sut, loadPossibleHabitsRepository } = makeSut()
-			jest.spyOn(loadPossibleHabitsRepository, 'loadByDateAndWeekDay').mockImplementationOnce(throwError)
-			const getPossibleHabitsParams = {
-				date: new Date(),
-				weekDay: WeekDay.MONDAY
-			}
+			const { sut, loadPossibleHabitsRepositorySpy } = makeSut()
+			jest.spyOn(loadPossibleHabitsRepositorySpy, 'loadByDateAndWeekDay').mockImplementationOnce(throwError)
+			const date = new Date()
 
-			const promise = sut.load(getPossibleHabitsParams.date, getPossibleHabitsParams.weekDay)
+			const promise = sut.load(date)
 
 			await expect(promise).rejects.toThrow()
 		})
 	})
 
 	describe('loadCompletedHabitsRepository()', () => {
-		test('Deve chamar loadCompletedHabitsRepository com os valores corretos', async () => {
-			const { sut, loadCompletedHabitsRepository } = makeSut()
-			const getCompletedHabitsParams = {
-				date: new Date(),
-				weekDay: WeekDay.MONDAY
-			}
+		test('Deve chamar loadCompletedHabitsRepositorySpy com os valores corretos', async () => {
+			const { sut, loadCompletedHabitsRepositorySpy } = makeSut()
+			const date = new Date()
 
-			await sut.load(getCompletedHabitsParams.date, getCompletedHabitsParams.weekDay)
+			await sut.load(date)
 
-			expect(loadCompletedHabitsRepository.date).toBe(getCompletedHabitsParams.date)
+			expect(loadCompletedHabitsRepositorySpy.date).toBe(date)
 		})
 
 		test('LoadCompletedHabitsRepository deve retornar uma lista de ids realizados', async () => {
-			const { sut, loadCompletedHabitsRepository } = makeSut()
-			const getCompletedHabitsParams = {
-				date: new Date(),
-				weekDay: WeekDay.MONDAY
-			}
+			const { sut, loadCompletedHabitsRepositorySpy } = makeSut()
 
-			const { completedHabits } = await sut.load(getCompletedHabitsParams.date, getCompletedHabitsParams.weekDay)
+			const { completedHabits } = await sut.load(new Date())
 
-			expect(completedHabits).toEqual(loadCompletedHabitsRepository.result)
+			expect(completedHabits).toEqual(loadCompletedHabitsRepositorySpy.result)
 		})
 
-		test('Deve propagar o erro se loadCompletedHabitsRepository lançar exceção', async () => {
-			const { sut, loadCompletedHabitsRepository } = makeSut()
-			jest.spyOn(loadCompletedHabitsRepository, 'loadByDate').mockImplementationOnce(throwError)
-			const getPossibleHabitsParams = {
-				date: new Date(),
-				weekDay: 1
-			}
+		test('Deve propagar o erro se loadCompletedHabitsRepositorySpy lançar exceção', async () => {
+			const { sut, loadCompletedHabitsRepositorySpy } = makeSut()
+			jest.spyOn(loadCompletedHabitsRepositorySpy, 'loadByDate').mockImplementationOnce(throwError)
 
-			const promise = sut.load(getPossibleHabitsParams.date, getPossibleHabitsParams.weekDay)
+			const promise = sut.load(new Date())
 
 			await expect(promise).rejects.toThrow()
 		})
 	})
 
 	test('Deve retornar objetos com array vazio se repos retornar null', async () => {
-		const { sut, loadCompletedHabitsRepository, loadPossibleHabitsRepository } = makeSut()
-			loadCompletedHabitsRepository.result = null
-			loadPossibleHabitsRepository.result = null
-			const getCompletedHabitsParams = {
-				date: new Date(),
-				weekDay: WeekDay.MONDAY
-			}
+		const { sut, loadCompletedHabitsRepositorySpy, loadPossibleHabitsRepositorySpy } = makeSut()
+			loadCompletedHabitsRepositorySpy.result = null
+			loadPossibleHabitsRepositorySpy.result = null
 
-			const result = await sut.load(getCompletedHabitsParams.date, getCompletedHabitsParams.weekDay)
+			const result = await sut.load(new Date())
 
 			expect(result).toEqual({
 				possibleHabits: [],

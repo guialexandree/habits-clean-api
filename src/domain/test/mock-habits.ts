@@ -12,3 +12,6 @@ export const mockLoadPossibleHabits = (): HabitResult[] =>
 		...mockHabitModel(),
 		weekDays: [0, 2, 4]
 	}))
+
+export const mockLoadCompletedHabits = (): string[] =>
+	[...Array.from({ length: 5 })].map(_ => faker.datatype.uuid())
