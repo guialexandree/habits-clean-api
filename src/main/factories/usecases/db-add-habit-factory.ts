@@ -3,6 +3,6 @@ import { AddHabit } from '@/domain/usecases'
 import { HabitSqliteRepository } from '@/infra/db/sqlite'
 
 export const makeDbAddHabit = (): AddHabit => {
-	const AddHabitRepository = new HabitSqliteRepository()
-	return new DbAddHabit(AddHabitRepository)
+	const addHabitRepository = new HabitSqliteRepository()
+	return new DbAddHabit(addHabitRepository)
 }
