@@ -1,9 +1,9 @@
 import { AddHabit } from '@/domain/usecases'
-import { AddHabitRepository, LoadCompletedHabitsRepository, LoadPossibleHabitsRepository, LoadDayHabitRepository, LoadDayRepository } from '@/data/protocols'
+import { AddHabitRepository, LoadCompletedHabitsRepository, LoadPossibleHabitsRepository, LoadDayHabitRepository, LoadDayRepository, RemoveDayHabitRepository } from '@/data/protocols'
 import { prismaClient } from './prisma-client'
 import { SqliteHelper } from './sqlite-helper'
 
-export class HabitSqliteRepository implements AddHabitRepository, LoadPossibleHabitsRepository, LoadCompletedHabitsRepository, LoadDayRepository, LoadDayHabitRepository {
+export class HabitSqliteRepository implements AddHabitRepository, LoadPossibleHabitsRepository, LoadCompletedHabitsRepository, LoadDayRepository, LoadDayHabitRepository, RemoveDayHabitRepository {
 	async add (data: AddHabit.Params): Promise<AddHabitRepository.Result> {
 		const { title, createdAt, weekDays } = data
 
@@ -88,5 +88,13 @@ export class HabitSqliteRepository implements AddHabitRepository, LoadPossibleHa
     })
 
 		return dayHabit?.id
+	}
+
+	async removeById (dayHabitId: string): Promise<void> {
+		await prismaClient.dayHabit.delete({
+			where: {
+				id: dayHabitId
+			}
+		})
 	}
 }
