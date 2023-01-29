@@ -61,19 +61,11 @@ export class HabitSqliteRepository implements AddHabitRepository, LoadPossibleHa
 	async loadOrCreate (date: Date): Promise<string> {
 		const today = new Date(date)
 
-    let day = await prismaClient.day.findUnique({
+    const day = await prismaClient.day.findUnique({
       where: {
         date: today
       }
     })
-
-    if (!day) {
-      day = await prismaClient.day.create({
-        data: {
-          date: today
-        }
-      })
-    }
 
 		return day.id
 	}
