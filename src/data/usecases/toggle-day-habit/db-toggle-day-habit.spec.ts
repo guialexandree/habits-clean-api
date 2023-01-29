@@ -1,24 +1,36 @@
 
 import { DbToggleDayHabit } from './db-toggle-day-habit'
 import { throwError } from '@/domain/test'
-import { LoadCompletedHabitsRepositorySpy, LoadDayRepositorySpy } from '@/data/test'
+import {
+	LoadCompletedHabitsRepositorySpy,
+	LoadDayRepositorySpy,
+	RemoveDayHabitRepositorySpy
+} from '@/data/test'
 import MockDate from 'mockdate'
 
 type SutTypes = {
 	sut: DbToggleDayHabit
 	loadDayRepositorySpy: LoadDayRepositorySpy
 	loadCompletedHabitsRepositorySpy: LoadCompletedHabitsRepositorySpy
+	removeDayHabitRepositorySpy: RemoveDayHabitRepositorySpy
 }
 
 const makeSut = (): SutTypes => {
 	const loadDayRepositorySpy = new LoadDayRepositorySpy()
 	const loadCompletedHabitsRepositorySpy = new LoadCompletedHabitsRepositorySpy()
-	const sut = new DbToggleDayHabit(loadDayRepositorySpy, loadCompletedHabitsRepositorySpy)
+	const removeDayHabitRepositorySpy = new RemoveDayHabitRepositorySpy()
+
+	const sut = new DbToggleDayHabit(
+		loadDayRepositorySpy,
+		loadCompletedHabitsRepositorySpy,
+		removeDayHabitRepositorySpy
+	)
 
 	return {
 		sut,
 		loadDayRepositorySpy,
-		loadCompletedHabitsRepositorySpy
+		loadCompletedHabitsRepositorySpy,
+		removeDayHabitRepositorySpy
 	}
 }
 
@@ -31,7 +43,7 @@ describe('Caso de uso - Inverte status do hábito na data', () => {
 		MockDate.reset()
 	})
 
-	describe('loadPossibleHabitsRepository()', () => {
+	describe('toggle()', () => {
 		test('Deve chamar loadDayRepository com a data correta', async () => {
 			const { sut, loadDayRepositorySpy } = makeSut()
 			const date = new Date()
@@ -66,6 +78,14 @@ describe('Caso de uso - Inverte status do hábito na data', () => {
 			const promise = sut.toggle('any_habit_id')
 
 			await expect(promise).rejects.toThrow()
+		})
+
+		test('Deve chamar removeDayHabit com o dayId correto', async () => {
+			const { sut, loadDayRepositorySpy, removeDayHabitRepositorySpy } = makeSut()
+
+			await sut.toggle('any_habit_id')
+
+			expect(removeDayHabitRepositorySpy.dayHabitId).toEqual(loadDayRepositorySpy.result)
 		})
 	})
 })
