@@ -97,5 +97,14 @@ describe('Caso de uso - Inverte status do hábito na data', () => {
 			expect(removeDayHabitRepositorySpy.dayHabitId).toEqual(loadDayHabitRepositorySpy.result)
 			expect(removeDayHabitRepositorySpy.callsCount).toBe(1)
 		})
+
+		test('Deve propagar o erro se removeDayHabit lançar exceção', async () => {
+			const { sut, removeDayHabitRepositorySpy } = makeSut()
+			jest.spyOn(removeDayHabitRepositorySpy, 'removeById').mockImplementationOnce(throwError)
+
+			const promise = sut.toggle('any_habit_id')
+
+			await expect(promise).rejects.toThrow()
+		})
 	})
 })
