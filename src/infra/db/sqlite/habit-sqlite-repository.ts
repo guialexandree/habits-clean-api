@@ -78,7 +78,7 @@ export class HabitSqliteRepository implements AddHabitRepository, LoadPossibleHa
 	}
 
 	async loadCompletedHabit (habitId: string, dayId: string): Promise<string> {
-		const { id } = await prismaClient.dayHabit.findUnique({
+		const dayHabit = await prismaClient.dayHabit.findUnique({
       where: {
         day_id_habit_id: {
           day_id: dayId,
@@ -87,6 +87,6 @@ export class HabitSqliteRepository implements AddHabitRepository, LoadPossibleHa
       }
     })
 
-		return id
+		return dayHabit?.id
 	}
 }
