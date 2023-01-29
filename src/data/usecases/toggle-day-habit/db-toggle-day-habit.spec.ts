@@ -80,12 +80,22 @@ describe('Caso de uso - Inverte status do hábito na data', () => {
 			await expect(promise).rejects.toThrow()
 		})
 
+		test('Deve chamar removeDayHabit somente quando hábito ja tiver sido realizado', async () => {
+			const { sut, removeDayHabitRepositorySpy, loadDayHabitRepositorySpy } = makeSut()
+			loadDayHabitRepositorySpy.result = null
+
+			await sut.toggle('any_habit_id')
+
+			expect(removeDayHabitRepositorySpy.callsCount).toBe(0)
+		})
+
 		test('Deve chamar removeDayHabit com o dayId correto', async () => {
 			const { sut, loadDayHabitRepositorySpy, removeDayHabitRepositorySpy } = makeSut()
 
 			await sut.toggle('any_habit_id')
 
 			expect(removeDayHabitRepositorySpy.dayHabitId).toEqual(loadDayHabitRepositorySpy.result)
+			expect(removeDayHabitRepositorySpy.callsCount).toBe(1)
 		})
 	})
 })
