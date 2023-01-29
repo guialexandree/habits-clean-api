@@ -1,5 +1,5 @@
 [![Coverage Status](https://coveralls.io/repos/github/guialexandree/habits-clean-api/badge.svg?branch=master)](https://coveralls.io/github/guialexandree/habits-clean-api?branch=master)
-[![Coverage Status](https://coveralls.io/repos/github/guialexandree/habits-clean-api/badge.svg?branch=master)](https://coveralls.io/github/guialexandree/habits-clean-api?branch=master)
+[![Known Vulnerabilities](https://snyk.io/test/github/guialexandree/habits-clean-api/badge.svg)](https://snyk.io/test/github/guialexandree/habits-clean-api)
 
 
 # Habits 🎈 - API para Gerenciamento de Hábitos
