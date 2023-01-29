@@ -16,6 +16,8 @@ export class DbToggleDayHabit implements ToggleDayHabit {
 		const today = new Date()
 		const dayId = await this.loadDayRepository.loadOrCreate(today)
 		const completedHabitId = await this.loadDayHabitRepository.loadCompletedHabit(habitId, dayId)
-		await this.removeDayHabitRepository.removeById(completedHabitId)
+		if (completedHabitId) {
+			await this.removeDayHabitRepository.removeById(completedHabitId)
+		}
 	}
 }
