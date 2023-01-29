@@ -1,5 +1,6 @@
 import { ToggleDayHabit } from '@/domain/usecases/'
 import {
+	AddDayHabitRepository,
 	LoadDayHabitRepository,
 	LoadDayRepository,
 	RemoveDayHabitRepository
@@ -9,7 +10,8 @@ export class DbToggleDayHabit implements ToggleDayHabit {
 	constructor (
 		private readonly loadDayRepository: LoadDayRepository,
 		private readonly loadDayHabitRepository: LoadDayHabitRepository,
-		private readonly removeDayHabitRepository: RemoveDayHabitRepository
+		private readonly removeDayHabitRepository: RemoveDayHabitRepository,
+		private readonly addDayHabitRepository: AddDayHabitRepository
 	) {}
 
 	async toggle (habitId: string): Promise<void> {
@@ -19,5 +21,6 @@ export class DbToggleDayHabit implements ToggleDayHabit {
 		if (completedHabitId) {
 			await this.removeDayHabitRepository.removeById(completedHabitId)
 		}
+		await this.addDayHabitRepository.addDayHabit(habitId, dayId)
 	}
 }
