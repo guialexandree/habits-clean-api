@@ -4,39 +4,7 @@ import { AddHabit } from '@/domain/usecases'
 import { WeekDay } from '@/main/types'
 import faker from 'faker'
 import MockDate from 'mockdate'
-
-const createDay = async (createdAt: Date): Promise<string> => {
-	const { id } = await prismaClient.day.create({
-		data: {
-			date: createdAt
-		}
-	})
-
-	return id
-}
-
-const createNewHabit = async (createdAt = faker.date.recent(), weekDay: number, dayId?: string): Promise<string> => {
-	const { id } = await prismaClient.habit.create({
-		data: {
-			title: faker.random.words(4),
-			created_at: createdAt,
-			weekDays: {
-				create: {
-					week_day: weekDay
-				}
-			},
-			...(dayId && {
-				dayHabits: {
-					create: {
-						day_id: dayId
-					}
-				}
-			})
-		}
-	})
-
-	return id
-}
+import { createDay, createHabit } from '@/domain/test'
 
 const makeAddHabitParams = (): AddHabit.Params => ({
 	title: faker.datatype.uuid(),
@@ -91,10 +59,10 @@ describe('Habit Sqlite Repository', () => {
 			const { sut } = makeSut()
 			const searchDate = new Date('2023-01-22')
 			const weekDay = searchDate.getDay()
-			await createNewHabit(new Date('2023-01-21'), weekDay === 6 ? (weekDay - 1) : (weekDay + 1))
-			await createNewHabit(new Date('2023-01-21'), weekDay)
-			await createNewHabit(new Date('2023-01-22'), weekDay)
-			await createNewHabit(new Date('2023-01-23'), weekDay)
+			await createHabit(new Date('2023-01-21'), weekDay === 6 ? (weekDay - 1) : (weekDay + 1))
+			await createHabit(new Date('2023-01-21'), weekDay)
+			await createHabit(new Date('2023-01-22'), weekDay)
+			await createHabit(new Date('2023-01-23'), weekDay)
 
 			const list = await sut.loadByDateAndWeekDay(searchDate, weekDay)
 
@@ -107,7 +75,7 @@ describe('Habit Sqlite Repository', () => {
 			const { sut } = makeSut()
 			const searchDate = new Date('2023-01-23')
 			const dayId = await createDay(searchDate)
-			const habitId = await createNewHabit(searchDate, 0, dayId)
+			const habitId = await createHabit(searchDate, 0, dayId)
 
 			const list = await sut.loadByDate(searchDate)
 
@@ -128,7 +96,7 @@ describe('Habit Sqlite Repository', () => {
 			expect(dayId).toBe(mockDayId)
 		})
 
-		test('Deve retornar identificador do dia fornecido', async () => {
+		test('Deve retornar identificador do dia fornecido e criar data', async () => {
 			const { sut } = makeSut()
 			const searchDate = new Date('2023-01-23')
 			await prismaClient.dayHabit.deleteMany({})
@@ -145,7 +113,7 @@ describe('Habit Sqlite Repository', () => {
 			const { sut } = makeSut()
 			const date = new Date('2023-02-01')
 			const dayId = await createDay(date)
-			const habitId = await createNewHabit(date, 0, dayId)
+			const habitId = await createHabit(date, 0, dayId)
 			await prismaClient.dayHabit.deleteMany({})
 			const { id: mockDayHabitId } = await prismaClient.dayHabit.create({
 				data: {
@@ -165,7 +133,7 @@ describe('Habit Sqlite Repository', () => {
 			await prismaClient.dayHabit.deleteMany({})
 			await prismaClient.day.deleteMany({})
 			const dayId = await createDay(date)
-			const habitId = await createNewHabit(date, 0, dayId)
+			const habitId = await createHabit(date, 0, dayId)
 			await prismaClient.dayHabit.deleteMany({})
 
 			const dayHabitId = await sut.loadCompletedHabit(habitId, dayId)
@@ -181,7 +149,7 @@ describe('Habit Sqlite Repository', () => {
 			await prismaClient.dayHabit.deleteMany({})
 			await prismaClient.day.deleteMany({})
 			const dayId = await createDay(date)
-			const habitId = await createNewHabit(date, 0, dayId)
+			const habitId = await createHabit(date, 0, dayId)
 			await prismaClient.dayHabit.deleteMany({})
 			const { id: mockDayHabitId } = await prismaClient.dayHabit.create({
 				data: {
@@ -212,7 +180,7 @@ describe('Habit Sqlite Repository', () => {
 			await prismaClient.dayHabit.deleteMany({})
 			await prismaClient.day.deleteMany({})
 			const dayId = await createDay(date)
-			const habitId = await createNewHabit(date, 0, dayId)
+			const habitId = await createHabit(date, 0, dayId)
 
 			await prismaClient.dayHabit.delete({
 				where: {
