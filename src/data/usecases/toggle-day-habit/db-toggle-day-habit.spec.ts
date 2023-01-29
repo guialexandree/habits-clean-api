@@ -1,5 +1,6 @@
 
 import { DbToggleDayHabit } from './db-toggle-day-habit'
+import { throwError } from '@/domain/test'
 import { LoadCompletedHabitsRepositorySpy, LoadDayRepositorySpy } from '@/data/test'
 import MockDate from 'mockdate'
 
@@ -38,6 +39,15 @@ describe('Caso de uso - Inverte status do hábito na data', () => {
 			await sut.toggle('any_habit_id')
 
 			expect(loadDayRepositorySpy.date).toEqual(date)
+		})
+
+		test('Deve propagar o erro se loadDayRepository lançar exceção', async () => {
+			const { sut, loadDayRepositorySpy } = makeSut()
+			jest.spyOn(loadDayRepositorySpy, 'loadOrCreate').mockImplementationOnce(throwError)
+
+			const promise = sut.toggle('any_habit_id')
+
+			await expect(promise).rejects.toThrow()
 		})
 
 		test('Deve chamar loadCompletedHabits com a data correta', async () => {
