@@ -74,7 +74,7 @@ describe('AddHabit Controller', () => {
     expect(response).toEqual(serverError(new Error()))
   })
 
-	test('Deve retornar status 202 com a lista de hábitos', async () => {
+	test('Deve retornar status 200 com a lista de hábitos', async () => {
     const { sut, dbLoadHabitsSpy } = makeSut()
 
     const response = await sut.handle(mockRequest())
