@@ -2,6 +2,7 @@
 import { DbToggleDayHabit } from './db-toggle-day-habit'
 import { throwError } from '@/domain/test'
 import {
+	AddDayHabitRepositorySpy,
 	LoadDayHabitRepositorySpy,
 	LoadDayRepositorySpy,
 	RemoveDayHabitRepositorySpy
@@ -13,24 +14,28 @@ type SutTypes = {
 	loadDayRepositorySpy: LoadDayRepositorySpy
 	loadDayHabitRepositorySpy: LoadDayHabitRepositorySpy
 	removeDayHabitRepositorySpy: RemoveDayHabitRepositorySpy
+	addDayHabitRepositorySpy: AddDayHabitRepositorySpy
 }
 
 const makeSut = (): SutTypes => {
 	const loadDayRepositorySpy = new LoadDayRepositorySpy()
 	const loadDayHabitRepositorySpy = new LoadDayHabitRepositorySpy()
 	const removeDayHabitRepositorySpy = new RemoveDayHabitRepositorySpy()
+	const addDayHabitRepositorySpy = new AddDayHabitRepositorySpy()
 
 	const sut = new DbToggleDayHabit(
 		loadDayRepositorySpy,
 		loadDayHabitRepositorySpy,
-		removeDayHabitRepositorySpy
+		removeDayHabitRepositorySpy,
+		addDayHabitRepositorySpy
 	)
 
 	return {
 		sut,
 		loadDayRepositorySpy,
 		loadDayHabitRepositorySpy,
-		removeDayHabitRepositorySpy
+		removeDayHabitRepositorySpy,
+		addDayHabitRepositorySpy
 	}
 }
 
@@ -105,6 +110,15 @@ describe('Caso de uso - Inverte status do hábito na data', () => {
 			const promise = sut.toggle('any_habit_id')
 
 			await expect(promise).rejects.toThrow()
+		})
+
+		test('Deve chamar addDayHabit com os dados corretos', async () => {
+			const { sut, loadDayRepositorySpy, addDayHabitRepositorySpy } = makeSut()
+
+			await sut.toggle('any_habit_id')
+
+			expect(addDayHabitRepositorySpy.dayId).toBe(loadDayRepositorySpy.result)
+			expect(addDayHabitRepositorySpy.habitId).toBe('any_habit_id')
 		})
 	})
 })
