@@ -139,4 +139,38 @@ describe('Habit Sqlite Repository', () => {
 			expect(dayId).toBeTruthy()
 		})
 	})
+
+	describe('loadCompletedHabit()', () => {
+		test('Deve retornar identificador dayHabitId correto', async () => {
+			const { sut } = makeSut()
+			const date = new Date('2023-02-01')
+			const dayId = await createDay(date)
+			const habitId = await createNewHabit(date, 0, dayId)
+			await prismaClient.dayHabit.deleteMany({})
+			const { id: mockDayHabitId } = await prismaClient.dayHabit.create({
+				data: {
+					day_id: dayId,
+					habit_id: habitId
+				}
+			})
+
+			const dayHabitId = await sut.loadCompletedHabit(habitId, dayId)
+
+			expect(dayHabitId).toBe(mockDayHabitId)
+		})
+
+		test('Deve retornar null caso hábito ainda não foi realizado na data', async () => {
+			const { sut } = makeSut()
+			const date = new Date('2023-02-01')
+			await prismaClient.dayHabit.deleteMany({})
+			await prismaClient.day.deleteMany({})
+			const dayId = await createDay(date)
+			const habitId = await createNewHabit(date, 0, dayId)
+			await prismaClient.dayHabit.deleteMany({})
+
+			const dayHabitId = await sut.loadCompletedHabit(habitId, dayId)
+
+			expect(dayHabitId).toBeFalsy()
+		})
+	})
 })
