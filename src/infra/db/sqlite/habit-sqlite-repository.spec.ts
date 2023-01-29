@@ -1,9 +1,9 @@
 import { prismaClient } from './prisma-client'
 import { HabitSqliteRepository } from './habit-sqlite-repository'
 import { AddHabit } from '@/domain/usecases'
+import { WeekDay } from '@/main/types'
 import faker from 'faker'
 import MockDate from 'mockdate'
-import { WeekDay } from '@/main/types'
 
 const createDay = async (createdAt: Date): Promise<string> => {
 	const { id } = await prismaClient.day.create({
@@ -73,12 +73,12 @@ describe('Habit Sqlite Repository', () => {
 		MockDate.reset()
 	})
 
-	describe('add()', () => {
+	describe('addHabit()', () => {
 		test('Deve adicionar o hábito com sucesso', async () => {
 			const { sut } = makeSut()
 			const addHabitParams = makeAddHabitParams()
 
-			const { id } = await sut.add(addHabitParams)
+			const { id } = await sut.addHabit(addHabitParams)
 
 			const count = await prismaClient.habit.count()
 			expect(count).toBe(1)
@@ -183,14 +183,14 @@ describe('Habit Sqlite Repository', () => {
 			const dayId = await createDay(date)
 			const habitId = await createNewHabit(date, 0, dayId)
 			await prismaClient.dayHabit.deleteMany({})
-			const { id: dayHabitId } = await prismaClient.dayHabit.create({
+			const { id: mockDayHabitId } = await prismaClient.dayHabit.create({
 				data: {
 					day_id: dayId,
 					habit_id: habitId
 				}
 			})
 
-			await sut.removeById(dayHabitId)
+			await sut.removeById(mockDayHabitId)
 
 			const dayHabit = await prismaClient.dayHabit.findUnique({
 				where: {
@@ -202,6 +202,44 @@ describe('Habit Sqlite Repository', () => {
 			})
 
 			expect(dayHabit).toBeFalsy()
+		})
+	})
+
+	describe('addDayHabit()', () => {
+		test('Deve marcar o hábito como realizado criando o registro em dayHabits', async () => {
+			const { sut } = makeSut()
+			const date = new Date('2023-02-01')
+			await prismaClient.dayHabit.deleteMany({})
+			await prismaClient.day.deleteMany({})
+			const dayId = await createDay(date)
+			const habitId = await createNewHabit(date, 0, dayId)
+
+			await prismaClient.dayHabit.delete({
+				where: {
+					day_id_habit_id: {
+						day_id: dayId,
+						habit_id: habitId
+					}
+				}
+			})
+
+			await sut.addDayHabit(habitId, dayId)
+
+			const dayHabit = await prismaClient.dayHabit.findUnique({
+				where: {
+					day_id_habit_id: {
+						day_id: dayId,
+						habit_id: habitId
+					}
+				},
+				include: {
+					day: true,
+					habit: true
+				}
+			})
+
+			expect(dayHabit).toBeTruthy()
+			expect(dayHabit.day.date).toEqual(date)
 		})
 	})
 })
