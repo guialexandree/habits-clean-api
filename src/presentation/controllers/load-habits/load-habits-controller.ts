@@ -1,6 +1,6 @@
+import { LoadHabits } from '@/domain/usecases'
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
 import { badRequest, ok, serverError } from '@/presentation/helpers'
-import { LoadHabits } from '@/domain/usecases'
 
 export class LoadHabitsController implements Controller {
 	constructor (
