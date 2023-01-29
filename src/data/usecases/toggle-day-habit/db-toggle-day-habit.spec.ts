@@ -1,20 +1,23 @@
 
-import MockDate from 'mockdate'
 import { DbToggleDayHabit } from './db-toggle-day-habit'
-import { LoadDayRepositorySpy } from '@/data/test'
+import { LoadCompletedHabitsRepositorySpy, LoadDayRepositorySpy } from '@/data/test'
+import MockDate from 'mockdate'
 
 type SutTypes = {
 	sut: DbToggleDayHabit
 	loadDayRepositorySpy: LoadDayRepositorySpy
+	loadCompletedHabitsRepositorySpy: LoadCompletedHabitsRepositorySpy
 }
 
 const makeSut = (): SutTypes => {
 	const loadDayRepositorySpy = new LoadDayRepositorySpy()
-	const sut = new DbToggleDayHabit(loadDayRepositorySpy)
+	const loadCompletedHabitsRepositorySpy = new LoadCompletedHabitsRepositorySpy()
+	const sut = new DbToggleDayHabit(loadDayRepositorySpy, loadCompletedHabitsRepositorySpy)
 
 	return {
 		sut,
-		loadDayRepositorySpy
+		loadDayRepositorySpy,
+		loadCompletedHabitsRepositorySpy
 	}
 }
 
@@ -35,6 +38,15 @@ describe('Caso de uso - Inverte status do hábito na data', () => {
 			await sut.toggle('any_habit_id')
 
 			expect(loadDayRepositorySpy.date).toEqual(date)
+		})
+
+		test('Deve chamar loadCompletedHabits com a data correta', async () => {
+			const { sut, loadCompletedHabitsRepositorySpy } = makeSut()
+			const date = new Date()
+
+			await sut.toggle('any_habit_id')
+
+			expect(loadCompletedHabitsRepositorySpy.date).toEqual(date)
 		})
 	})
 })
