@@ -120,5 +120,14 @@ describe('Caso de uso - Inverte status do hábito na data', () => {
 			expect(addDayHabitRepositorySpy.dayId).toBe(loadDayRepositorySpy.result)
 			expect(addDayHabitRepositorySpy.habitId).toBe('any_habit_id')
 		})
+
+		test('Deve propagar o erro se addDayHabit lançar exceção', async () => {
+			const { sut, addDayHabitRepositorySpy } = makeSut()
+			jest.spyOn(addDayHabitRepositorySpy, 'addDayHabit').mockImplementationOnce(throwError)
+
+			const promise = sut.toggle('any_habit_id')
+
+			await expect(promise).rejects.toThrow()
+		})
 	})
 })
