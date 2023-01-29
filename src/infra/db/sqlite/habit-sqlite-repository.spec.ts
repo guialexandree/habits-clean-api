@@ -173,4 +173,35 @@ describe('Habit Sqlite Repository', () => {
 			expect(dayHabitId).toBeFalsy()
 		})
 	})
+
+	describe('removeById()', () => {
+		test('Deve remover dayHabit', async () => {
+			const { sut } = makeSut()
+			const date = new Date('2023-02-01')
+			await prismaClient.dayHabit.deleteMany({})
+			await prismaClient.day.deleteMany({})
+			const dayId = await createDay(date)
+			const habitId = await createNewHabit(date, 0, dayId)
+			await prismaClient.dayHabit.deleteMany({})
+			const { id: dayHabitId } = await prismaClient.dayHabit.create({
+				data: {
+					day_id: dayId,
+					habit_id: habitId
+				}
+			})
+
+			await sut.removeById(dayHabitId)
+
+			const dayHabit = await prismaClient.dayHabit.findUnique({
+				where: {
+					day_id_habit_id: {
+						day_id: dayId,
+						habit_id: habitId
+					}
+				}
+			})
+
+			expect(dayHabit).toBeFalsy()
+		})
+	})
 })
