@@ -4,5 +4,5 @@ import { makeAddHabitController, makeLoadHabitsController } from '@/main/factori
 
 export default (app: FastifyInstance): void => {
 	app.post('/habits', adaptRoute(makeAddHabitController()))
-	app.get('/habits', adaptRoute(makeLoadHabitsController()))
+	app.get('/day', adaptRoute(makeLoadHabitsController()))
 }
