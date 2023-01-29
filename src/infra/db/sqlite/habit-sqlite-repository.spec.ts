@@ -114,4 +114,18 @@ describe('Habit Sqlite Repository', () => {
 			expect(list[0]).toBe(habitId)
 		})
 	})
+
+	describe('loadOrCreate()', () => {
+		test('Deve retornar identificador do dia fornecido', async () => {
+			const { sut } = makeSut()
+			const searchDate = new Date('2023-01-23')
+			await prismaClient.dayHabit.deleteMany({})
+			await prismaClient.day.deleteMany({})
+			const mockDayId = await createDay(searchDate)
+
+			const dayId = await sut.loadOrCreate(searchDate)
+
+			expect(dayId).toBe(mockDayId)
+		})
+	})
 })
