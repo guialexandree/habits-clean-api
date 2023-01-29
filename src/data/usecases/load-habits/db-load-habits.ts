@@ -1,10 +1,10 @@
 import { LoadHabits } from '@/domain/usecases'
-import { LoadCompletedHabitsRepository, LoadPossibleHabitsRepository } from '@/data/protocols'
+import { LoadCompletedHabitRepository, LoadPossibleHabitsRepository } from '@/data/protocols'
 
 export class DbLoadHabits implements LoadHabits {
 	constructor (
 		private readonly loadPossibleHabitsRepository: LoadPossibleHabitsRepository,
-		private readonly loadCompletedHabitsRepository: LoadCompletedHabitsRepository
+		private readonly loadCompletedHabitsRepository: LoadCompletedHabitRepository
 	) {}
 
 	async load (date: Date): Promise<LoadHabits.Result> {

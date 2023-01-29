@@ -1,6 +1,6 @@
 import { ToggleDayHabit } from '@/domain/usecases/'
 import {
-	LoadCompletedHabitsRepository,
+	LoadCompletedHabitRepository,
 	LoadDayRepository,
 	RemoveDayHabitRepository
 } from '@/data/protocols'
@@ -8,7 +8,7 @@ import {
 export class DbToggleDayHabit implements ToggleDayHabit {
 	constructor (
 		private readonly loadDayRepository: LoadDayRepository,
-		private readonly loadCompletedHabitsRepository: LoadCompletedHabitsRepository,
+		private readonly loadCompletedHabitsRepository: LoadCompletedHabitRepository,
 		private readonly removeDayHabitRepository: RemoveDayHabitRepository
 	) {}
 

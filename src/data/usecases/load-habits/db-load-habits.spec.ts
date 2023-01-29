@@ -1,16 +1,16 @@
 import { DbLoadHabits } from './db-load-habits'
 import { throwError } from '@/domain/test'
-import { LoadCompletedHabitsRepositorySpy, LoadPossibleHabitsRepositorySpy } from '@/data/test'
+import { LoadCompletedHabitRepositorySpy, LoadPossibleHabitsRepositorySpy } from '@/data/test'
 
 type SutTypes = {
 	sut: DbLoadHabits
 	loadPossibleHabitsRepositorySpy: LoadPossibleHabitsRepositorySpy
-	loadCompletedHabitsRepositorySpy: LoadCompletedHabitsRepositorySpy
+	loadCompletedHabitsRepositorySpy: LoadCompletedHabitRepositorySpy
 }
 
 const makeSut = (): SutTypes => {
 	const loadPossibleHabitsRepositorySpy = new LoadPossibleHabitsRepositorySpy()
-	const loadCompletedHabitsRepositorySpy = new LoadCompletedHabitsRepositorySpy()
+	const loadCompletedHabitsRepositorySpy = new LoadCompletedHabitRepositorySpy()
 	const sut = new DbLoadHabits(loadPossibleHabitsRepositorySpy, loadCompletedHabitsRepositorySpy)
 
 	return {
@@ -61,7 +61,7 @@ describe('Caso de uso - Adicionar Hábito', () => {
 			expect(loadCompletedHabitsRepositorySpy.date).toBe(date)
 		})
 
-		test('LoadCompletedHabitsRepository deve retornar uma lista de ids realizados', async () => {
+		test('LoadCompletedHabitRepository deve retornar uma lista de ids realizados', async () => {
 			const { sut, loadCompletedHabitsRepositorySpy } = makeSut()
 
 			const { completedHabits } = await sut.load(new Date())

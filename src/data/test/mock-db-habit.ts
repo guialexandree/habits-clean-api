@@ -1,5 +1,5 @@
 import { AddHabit } from '@/domain/usecases'
-import { AddHabitRepository, LoadCompletedHabitsRepository, LoadDayRepository, LoadPossibleHabitsRepository, RemoveDayHabitRepository } from '@/data/protocols'
+import { AddHabitRepository, LoadCompletedHabitRepository, LoadDayRepository, LoadPossibleHabitsRepository, RemoveDayHabitRepository } from '@/data/protocols'
 import { mockLoadPossibleHabits } from '@/domain/test/mock-habits'
 import faker from 'faker'
 
@@ -25,11 +25,11 @@ export class LoadPossibleHabitsRepositorySpy implements LoadPossibleHabitsReposi
 	}
 }
 
-export class LoadCompletedHabitsRepositorySpy implements LoadCompletedHabitsRepository {
+export class LoadCompletedHabitRepositorySpy implements LoadCompletedHabitRepository {
 	date: Date
 	result = [faker.datatype.uuid(), faker.datatype.uuid(), faker.datatype.uuid()]
 
-	async loadByDate (date: Date): Promise<LoadCompletedHabitsRepository.Result> {
+	async loadByDate (date: Date): Promise<LoadCompletedHabitRepository.Result> {
 		this.date = date
 
 		return this.result

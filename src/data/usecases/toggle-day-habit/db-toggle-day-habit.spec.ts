@@ -2,7 +2,7 @@
 import { DbToggleDayHabit } from './db-toggle-day-habit'
 import { throwError } from '@/domain/test'
 import {
-	LoadCompletedHabitsRepositorySpy,
+	LoadCompletedHabitRepositorySpy,
 	LoadDayRepositorySpy,
 	RemoveDayHabitRepositorySpy
 } from '@/data/test'
@@ -11,13 +11,13 @@ import MockDate from 'mockdate'
 type SutTypes = {
 	sut: DbToggleDayHabit
 	loadDayRepositorySpy: LoadDayRepositorySpy
-	loadCompletedHabitsRepositorySpy: LoadCompletedHabitsRepositorySpy
+	loadCompletedHabitsRepositorySpy: LoadCompletedHabitRepositorySpy
 	removeDayHabitRepositorySpy: RemoveDayHabitRepositorySpy
 }
 
 const makeSut = (): SutTypes => {
 	const loadDayRepositorySpy = new LoadDayRepositorySpy()
-	const loadCompletedHabitsRepositorySpy = new LoadCompletedHabitsRepositorySpy()
+	const loadCompletedHabitsRepositorySpy = new LoadCompletedHabitRepositorySpy()
 	const removeDayHabitRepositorySpy = new RemoveDayHabitRepositorySpy()
 
 	const sut = new DbToggleDayHabit(
