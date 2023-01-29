@@ -2,7 +2,7 @@
 import { DbToggleDayHabit } from './db-toggle-day-habit'
 import { throwError } from '@/domain/test'
 import {
-	LoadCompletedHabitRepositorySpy,
+	LoadDayHabitRepositorySpy,
 	LoadDayRepositorySpy,
 	RemoveDayHabitRepositorySpy
 } from '@/data/test'
@@ -11,25 +11,25 @@ import MockDate from 'mockdate'
 type SutTypes = {
 	sut: DbToggleDayHabit
 	loadDayRepositorySpy: LoadDayRepositorySpy
-	loadCompletedHabitsRepositorySpy: LoadCompletedHabitRepositorySpy
+	loadDayHabitRepositorySpy: LoadDayHabitRepositorySpy
 	removeDayHabitRepositorySpy: RemoveDayHabitRepositorySpy
 }
 
 const makeSut = (): SutTypes => {
 	const loadDayRepositorySpy = new LoadDayRepositorySpy()
-	const loadCompletedHabitsRepositorySpy = new LoadCompletedHabitRepositorySpy()
+	const loadDayHabitRepositorySpy = new LoadDayHabitRepositorySpy()
 	const removeDayHabitRepositorySpy = new RemoveDayHabitRepositorySpy()
 
 	const sut = new DbToggleDayHabit(
 		loadDayRepositorySpy,
-		loadCompletedHabitsRepositorySpy,
+		loadDayHabitRepositorySpy,
 		removeDayHabitRepositorySpy
 	)
 
 	return {
 		sut,
 		loadDayRepositorySpy,
-		loadCompletedHabitsRepositorySpy,
+		loadDayHabitRepositorySpy,
 		removeDayHabitRepositorySpy
 	}
 }
@@ -62,18 +62,18 @@ describe('Caso de uso - Inverte status do hábito na data', () => {
 			await expect(promise).rejects.toThrow()
 		})
 
-		test('Deve chamar loadCompletedHabits com a data correta', async () => {
-			const { sut, loadCompletedHabitsRepositorySpy } = makeSut()
-			const date = new Date()
+		test('Deve chamar loadCompletedHabit com os dados corretos', async () => {
+			const { sut, loadDayRepositorySpy, loadDayHabitRepositorySpy } = makeSut()
 
 			await sut.toggle('any_habit_id')
 
-			expect(loadCompletedHabitsRepositorySpy.date).toEqual(date)
+			expect(loadDayHabitRepositorySpy.dayId).toBe(loadDayRepositorySpy.result)
+			expect(loadDayHabitRepositorySpy.habitId).toBe('any_habit_id')
 		})
 
-		test('Deve propagar o erro se loadCompletedHabits lançar exceção', async () => {
-			const { sut, loadCompletedHabitsRepositorySpy } = makeSut()
-			jest.spyOn(loadCompletedHabitsRepositorySpy, 'loadByDate').mockImplementationOnce(throwError)
+		test('Deve propagar o erro se loadCompletedHabit lançar exceção', async () => {
+			const { sut, loadDayHabitRepositorySpy } = makeSut()
+			jest.spyOn(loadDayHabitRepositorySpy, 'loadCompletedHabit').mockImplementationOnce(throwError)
 
 			const promise = sut.toggle('any_habit_id')
 
@@ -81,11 +81,11 @@ describe('Caso de uso - Inverte status do hábito na data', () => {
 		})
 
 		test('Deve chamar removeDayHabit com o dayId correto', async () => {
-			const { sut, loadDayRepositorySpy, removeDayHabitRepositorySpy } = makeSut()
+			const { sut, loadDayHabitRepositorySpy, removeDayHabitRepositorySpy } = makeSut()
 
 			await sut.toggle('any_habit_id')
 
-			expect(removeDayHabitRepositorySpy.dayHabitId).toEqual(loadDayRepositorySpy.result)
+			expect(removeDayHabitRepositorySpy.dayHabitId).toEqual(loadDayHabitRepositorySpy.result)
 		})
 	})
 })

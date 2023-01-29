@@ -1,16 +1,16 @@
 import { DbLoadHabits } from './db-load-habits'
 import { throwError } from '@/domain/test'
-import { LoadCompletedHabitRepositorySpy, LoadPossibleHabitsRepositorySpy } from '@/data/test'
+import { LoadCompletedHabitsRepositorySpy, LoadPossibleHabitsRepositorySpy } from '@/data/test'
 
 type SutTypes = {
 	sut: DbLoadHabits
 	loadPossibleHabitsRepositorySpy: LoadPossibleHabitsRepositorySpy
-	loadCompletedHabitsRepositorySpy: LoadCompletedHabitRepositorySpy
+	loadCompletedHabitsRepositorySpy: LoadCompletedHabitsRepositorySpy
 }
 
 const makeSut = (): SutTypes => {
 	const loadPossibleHabitsRepositorySpy = new LoadPossibleHabitsRepositorySpy()
-	const loadCompletedHabitsRepositorySpy = new LoadCompletedHabitRepositorySpy()
+	const loadCompletedHabitsRepositorySpy = new LoadCompletedHabitsRepositorySpy()
 	const sut = new DbLoadHabits(loadPossibleHabitsRepositorySpy, loadCompletedHabitsRepositorySpy)
 
 	return {
