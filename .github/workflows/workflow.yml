@@ -1,13 +1,9 @@
-on:
-  push:
-    branches: 
-      - master
-
 name: Coverage
 
+on: [push]
+    
 jobs:
-  build:
-    name: test
+  Jest-Coverage:
     runs-on: ubuntu-latest
     steps:
 
@@ -18,7 +14,7 @@ jobs:
       with:
         node-version: 16.18.x
 
-    - name: npm install, make test-coverage
+    - name: npm install, run test-coverage
       run: |
         npm install
         npm run test:ci
