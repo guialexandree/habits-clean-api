@@ -1,5 +1,6 @@
 import { ToggleDayHabitController } from './toggle-day-habit-controller'
 import { DbToggleDayHabitSpy, ValidationSpy } from '@/presentation/test'
+import { badRequest } from '@/presentation/helpers'
 import MockDate from 'mockdate'
 import faker from 'faker'
 
@@ -50,5 +51,14 @@ describe('AddHabit Controller', () => {
     await sut.handle(request)
 
     expect(dbToggleDayHabitSpy.habitId).toBe(request.habitId)
+  })
+
+	test('Deve retornar status 400 se Validation falhar', async () => {
+    const { sut, validationSpy } = makeSut()
+    validationSpy.error = new Error()
+
+    const httpResponse = await sut.handle(mockRequest())
+
+    expect(httpResponse).toEqual(badRequest(validationSpy.error))
   })
 })
