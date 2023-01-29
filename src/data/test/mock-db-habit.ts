@@ -1,5 +1,5 @@
 import { AddHabit } from '@/domain/usecases'
-import { AddHabitRepository, LoadCompletedHabitRepository, LoadDayRepository, LoadPossibleHabitsRepository, RemoveDayHabitRepository } from '@/data/protocols'
+import { AddHabitRepository, LoadCompletedHabitsRepository, LoadDayHabitRepository, LoadDayRepository, LoadPossibleHabitsRepository, RemoveDayHabitRepository } from '@/data/protocols'
 import { mockLoadPossibleHabits } from '@/domain/test/mock-habits'
 import faker from 'faker'
 
@@ -25,11 +25,11 @@ export class LoadPossibleHabitsRepositorySpy implements LoadPossibleHabitsReposi
 	}
 }
 
-export class LoadCompletedHabitRepositorySpy implements LoadCompletedHabitRepository {
+export class LoadCompletedHabitsRepositorySpy implements LoadCompletedHabitsRepository {
 	date: Date
 	result = [faker.datatype.uuid(), faker.datatype.uuid(), faker.datatype.uuid()]
 
-	async loadByDate (date: Date): Promise<LoadCompletedHabitRepository.Result> {
+	async loadByDate (date: Date): Promise<LoadCompletedHabitsRepository.Result> {
 		this.date = date
 
 		return this.result
@@ -52,5 +52,18 @@ export class RemoveDayHabitRepositorySpy implements RemoveDayHabitRepository {
 
 	async removeById (dayHabitId: string): Promise<void> {
 		this.dayHabitId = dayHabitId
+	}
+}
+
+export class LoadDayHabitRepositorySpy implements LoadDayHabitRepository {
+	habitId: string
+	dayId: string
+	result = faker.datatype.uuid()
+
+	async loadCompletedHabit (habitId: string, dayId: string): Promise<string> {
+		this.habitId = habitId
+		this.dayId = dayId
+
+		return this.result
 	}
 }
