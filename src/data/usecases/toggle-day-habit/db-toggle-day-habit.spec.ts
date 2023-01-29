@@ -58,5 +58,14 @@ describe('Caso de uso - Inverte status do hábito na data', () => {
 
 			expect(loadCompletedHabitsRepositorySpy.date).toEqual(date)
 		})
+
+		test('Deve propagar o erro se loadCompletedHabits lançar exceção', async () => {
+			const { sut, loadCompletedHabitsRepositorySpy } = makeSut()
+			jest.spyOn(loadCompletedHabitsRepositorySpy, 'loadByDate').mockImplementationOnce(throwError)
+
+			const promise = sut.toggle('any_habit_id')
+
+			await expect(promise).rejects.toThrow()
+		})
 	})
 })
