@@ -8,7 +8,6 @@ module.exports = {
 		'!<rootDir>/src/**/index.ts'
 	],
 	coverageDirectory: 'coverage',
-	preset: '@shelf/jest-mongodb',
 	watchPathIgnorePatterns: ['globalConfig'],
 	transform: {
 		'.+\\.ts$': 'ts-jest'
