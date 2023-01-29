@@ -1,7 +1,7 @@
 import { AddHabit } from '@/domain/usecases'
 
 export interface AddHabitRepository {
-	add: (data: AddHabit.Params) => Promise<AddHabitRepository.Result>
+	addHabit: (data: AddHabit.Params) => Promise<AddHabitRepository.Result>
 }
 
 export namespace AddHabitRepository {

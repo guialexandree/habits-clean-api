@@ -42,7 +42,7 @@ describe('Caso de uso - Adicionar Hábito', () => {
 
 	test('Deve propagar o erro se dbAddHabitRepository lançar exceção', async () => {
 		const { sut, dbAddReposistorySpy } = makeSut()
-		jest.spyOn(dbAddReposistorySpy, 'add').mockImplementationOnce(throwError)
+		jest.spyOn(dbAddReposistorySpy, 'addHabit').mockImplementationOnce(throwError)
 		const addHabitParams = {
 			title: 'txt01',
 			createdAt: new Date(),
