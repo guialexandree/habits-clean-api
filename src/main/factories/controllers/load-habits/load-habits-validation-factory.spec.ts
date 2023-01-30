@@ -1,7 +1,6 @@
 import { Validation } from '@/presentation/protocols'
 import { DateFieldValidation, RequiredFieldValidation, ValidationComposite } from '@/validation/validators'
 import { makeLoadHabitsValidation } from '@/main/factories/controllers'
-import { DateValidatorAdapter } from '@/infra/validators'
 
 jest.mock('@/validation/validators/validation-composite/validation-composite')
 
@@ -14,7 +13,7 @@ describe('LoadHabitsValidation Factory', () => {
       validations.push(new RequiredFieldValidation(field))
     }
 
-		validations.push(new DateFieldValidation('date', new DateValidatorAdapter()))
+		validations.push(new DateFieldValidation('date'))
 
     expect(ValidationComposite).toHaveBeenCalledWith(validations)
   })

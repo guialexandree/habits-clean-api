@@ -1,50 +1,36 @@
 import { BadlyFormattedParamError } from '@/presentation/errors'
 import { DateFieldValidation } from '@/validation/validators'
-import { DateValidatorSpy } from '@/validation/test'
-import { throwError } from '@/domain/test'
 import faker from 'faker'
 
 const field = faker.random.word()
 
 type SutTypes = {
 	sut: DateFieldValidation
-	dateValidatorSpy: DateValidatorSpy
 }
 
 const makeSut = (): SutTypes => {
-	const dateValidatorSpy = new DateValidatorSpy()
-  const sut = new DateFieldValidation(field, dateValidatorSpy)
+  const sut = new DateFieldValidation(field)
 
 	return {
-		sut,
-		dateValidatorSpy
+		sut
 	}
 }
 
 describe('RequiredField Validation', () => {
   test('Deve retornar BadlyFormattedParamError se a validação falhar', () => {
-    const { sut, dateValidatorSpy } = makeSut()
-		dateValidatorSpy.isDateValid = false
+    const { sut } = makeSut()
 
-    const error = sut.validate({ [field]: faker.random.word() })
-
-		expect(error).toEqual(new BadlyFormattedParamError(field, 'Invalid format date, expected YYYY-MM-DD'))
+    const error = new BadlyFormattedParamError(field, 'Invalid format date, expected YYYY-MM-DD')
+		expect(sut.validate({ [field]: faker.random.word() })).toEqual(error)
+		expect(sut.validate({ [field]: '22-12-2021' })).toEqual(error)
+		expect(sut.validate({ [field]: '2023-21-21' })).toEqual(error)
 	})
 
   test('Deve retornar null se a validação ocorrer com sucesso', () => {
     const { sut } = makeSut()
 
-    const error = sut.validate({ [field]: faker.date.recent().toISOString() })
+    const error = sut.validate({ [field]: '2023-01-21' })
 
     expect(error).toBeFalsy()
-  })
-
-	test('Deve progagar o erro se DateValidator lançar exceção', () => {
-    const { sut, dateValidatorSpy } = makeSut()
-    jest
-			.spyOn(dateValidatorSpy, 'isValid')
-			.mockImplementationOnce(throwError)
-
-    expect(sut.validate).toThrow()
   })
 })
