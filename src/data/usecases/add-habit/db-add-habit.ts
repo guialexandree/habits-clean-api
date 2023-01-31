@@ -8,11 +8,12 @@ export class DbAddHabit implements AddHabit {
 	) {}
 
 	async add (dataHabit: AddHabit.Params): Promise<boolean> {
+		const createdAt = this.dateAdapter.startOfToday()
+
 		await this.addHabitReposistory.addHabit({
 			...dataHabit,
-			createdAt: new Date()
+			createdAt
 		})
-		this.dateAdapter.startOfToday()
 
 		return true
 	}
