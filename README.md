@@ -1,8 +1,10 @@
 [![Coverage Status](https://coveralls.io/repos/github/guialexandree/habits-clean-api/badge.svg?branch=master)](https://coveralls.io/github/guialexandree/habits-clean-api?branch=master)
 [![Known Vulnerabilities](https://snyk.io/test/github/guialexandree/habits-clean-api/badge.svg)](https://snyk.io/test/github/guialexandree/habits-clean-api)
 
-
 # Habits 🎈 - API para Gerenciamento de Hábitos
+
+![image](https://user-images.githubusercontent.com/30730216/215792250-ae7ce48a-3fed-4c11-a126-ae12bd87d217.png)
+
 
 Durante a semana NLW realizada pela **RocketSeat** para comunidade dev, foram desenvolvidos três projetos que juntos
 tem a finalidade de Gerenciar hábitos diários.
@@ -32,5 +34,4 @@ Conforme sugerido pelo Diego ao final da semana deveríamos dar um passo além n
 O projeto foi desenvolvido utilizando **TDD** como metodologia de trabalho, **Arquitetura Limpa** para fazer a distribuição
 das responsabilidades em camadas, seguindo os princípios de **SOLID**. Foram criadas novas validações para correçõpes de bugs,
 o código está com 100% de cobertura de testes 💚.
- 
-![image](https://user-images.githubusercontent.com/30730216/214993356-ff27f507-8296-444b-a2be-7c3804c0a19f.png)
+
