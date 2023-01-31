@@ -10,13 +10,13 @@ Durante a semana NLW realizada pela **RocketSeat** para comunidade dev, foram de
 tem a finalidade de Gerenciar hábitos diários.
 Conforme sugerido pelo Diego ao final da semana deveríamos dar um passo além nos projetos e incluir mais funcionalidades.
 
-### Rotas
+## Rotas
 🚩 POST `/habits` cadastro de novos hábitos<br>
 🚩 GET `/day?date=YYY-MM-DD` retornar lista de hábitos possíveis e lista de ids de hábitos realizados<br>
 🚩 PATCH `/habits/:id/toggle` inverte status do hábito entre **realizado** e **não realizado**<br>
 🚩 GET `/summary` retorna resumo anual
 
-### Estrutra do BD
+## Estrutra do BD
 
 ![image](https://user-images.githubusercontent.com/30730216/215297229-df351b45-2445-4e6a-a162-91374ca0b56f.png)
 
@@ -35,3 +35,9 @@ O projeto foi desenvolvido utilizando **TDD** como metodologia de trabalho, **Ar
 das responsabilidades em camadas, seguindo os princípios de **SOLID**. Foram criadas novas validações para correçõpes de bugs,
 o código está com 100% de cobertura de testes 💚.
 
+## Contribuindo
+
+Sinta-se à vontade para enviar pull requests para ajudar:
+- Corrigir erros;
+- Reestruturação;
+- Envie problemas e bugs.
