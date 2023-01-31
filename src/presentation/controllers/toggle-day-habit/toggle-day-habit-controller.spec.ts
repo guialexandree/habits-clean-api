@@ -1,6 +1,6 @@
 import { ToggleDayHabitController } from './toggle-day-habit-controller'
 import { DbToggleDayHabitSpy, ValidationSpy } from '@/presentation/test'
-import { badRequest, noContent, serverError } from '@/presentation/helpers'
+import { badRequest, ok, serverError } from '@/presentation/helpers'
 import { throwError } from '@/domain/test'
 import MockDate from 'mockdate'
 import faker from 'faker'
@@ -79,6 +79,6 @@ describe('AddHabit Controller', () => {
 
     const response = await sut.handle(mockRequest())
 
-    expect(response).toEqual(noContent())
+    expect(response).toEqual(ok(null))
   })
 })
