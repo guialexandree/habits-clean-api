@@ -6,6 +6,7 @@ import {
 	RemoveDayHabitRepository
 } from '@/data/protocols'
 
+// TODO: criari checkHabitIsValid()
 export class DbToggleDayHabit implements ToggleDayHabit {
 	constructor (
 		private readonly loadDayRepository: LoadDayRepository,
@@ -16,7 +17,8 @@ export class DbToggleDayHabit implements ToggleDayHabit {
 
 	async toggle (habitId: string): Promise<void> {
 		const today = new Date()
-		const dayId = await this.loadDayRepository.loadOrCreate(today)
+		const parsedDate = new Date(today.getFullYear(), today.getMonth(), today.getDate())
+		const dayId = await this.loadDayRepository.loadOrCreate(parsedDate)
 		const completedHabitId = await this.loadDayHabitRepository.loadCompletedHabit(habitId, dayId)
 		if (completedHabitId) {
 			await this.removeDayHabitRepository.removeById(completedHabitId)
