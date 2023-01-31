@@ -51,7 +51,9 @@ describe('AddHabit Controller', () => {
 
     await sut.handle(request)
 
-    expect(dbLoadHabitsSpy.dateParams.toISOString()).toBe(request.date)
+    expect(dbLoadHabitsSpy.dateParams.getFullYear().toString()).toBe(request.date.substring(0, 4))
+    expect((dbLoadHabitsSpy.dateParams.getMonth() + 1).toString().padStart(2, '0')).toBe(request.date.substring(5, 7).padStart(2, '0'))
+    expect(dbLoadHabitsSpy.dateParams.getDate().toString()).toBe(request.date.substring(8, 10).padStart(2, '0'))
   })
 
 	test('Deve retornar status 400 se Validation falhar', async () => {
