@@ -4,7 +4,7 @@ import { RequiredFieldValidation, ValidationComposite } from '@/validation/valid
 export const makeToggleDayHabitValidation = (): ValidationComposite => {
 	const validations: Validation[] = []
 
-	for (const field of ['id']) {
+	for (const field of ['habitId']) {
 		validations.push(new RequiredFieldValidation(field))
 	}
 
