@@ -9,7 +9,7 @@ describe('LoadHabitsValidation Factory', () => {
     makeToggleDayHabitValidation()
     const validations: Validation[] = []
 
-    for (const field of ['id']) {
+    for (const field of ['habitId']) {
       validations.push(new RequiredFieldValidation(field))
     }
     expect(ValidationComposite).toHaveBeenCalledWith(validations)
