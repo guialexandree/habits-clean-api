@@ -1,5 +1,5 @@
 import { ToggleDayHabit } from '@/domain/usecases'
-import { badRequest, noContent, serverError } from '@/presentation/helpers'
+import { badRequest, ok, serverError } from '@/presentation/helpers'
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
 
 export class ToggleDayHabitController implements Controller {
@@ -18,7 +18,7 @@ export class ToggleDayHabitController implements Controller {
 			const { habitId } = request
 			await this.dbToggleDayHabit.toggle(habitId)
 
-			return noContent()
+			return ok(null)
 		} catch (error) {
 			return serverError(error)
 		}
