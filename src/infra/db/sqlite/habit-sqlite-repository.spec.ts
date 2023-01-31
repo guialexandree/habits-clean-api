@@ -1,12 +1,12 @@
 import { prismaClient } from './prisma-client'
 import { HabitSqliteRepository } from './habit-sqlite-repository'
-import { AddHabit } from '@/domain/usecases'
 import { WeekDay } from '@/main/types'
+import { AddHabitRepository } from '@/data/protocols'
+import { createDay, createHabit } from '@/domain/test'
 import faker from 'faker'
 import MockDate from 'mockdate'
-import { createDay, createHabit } from '@/domain/test'
 
-const makeAddHabitParams = (): AddHabit.Params => ({
+const makeAddHabitParams = (): AddHabitRepository.Params => ({
 	title: faker.datatype.uuid(),
 	weekDays: [
 		WeekDay.SATURDAY,

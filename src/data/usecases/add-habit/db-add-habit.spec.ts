@@ -31,13 +31,15 @@ describe('Caso de uso - Adicionar Hábito', () => {
 		const { sut, dbAddReposistorySpy } = makeSut()
 		const addHabitParams = {
 			title: 'txt01',
-			createdAt: new Date(),
 			weekDays: [0, 2]
 		}
 
 		await sut.add(addHabitParams)
 
-		expect(dbAddReposistorySpy.addHabitParams).toEqual(addHabitParams)
+		expect(dbAddReposistorySpy.addHabitParams).toEqual({
+			...addHabitParams,
+			createdAt: new Date()
+		})
 	})
 
 	test('Deve propagar o erro se dbAddHabitRepository lançar exceção', async () => {
@@ -45,7 +47,6 @@ describe('Caso de uso - Adicionar Hábito', () => {
 		jest.spyOn(dbAddReposistorySpy, 'addHabit').mockImplementationOnce(throwError)
 		const addHabitParams = {
 			title: 'txt01',
-			createdAt: new Date(),
 			weekDays: [0, 2]
 		}
 

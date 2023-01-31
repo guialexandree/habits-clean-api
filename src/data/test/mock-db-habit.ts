@@ -1,12 +1,11 @@
-import { AddHabit } from '@/domain/usecases'
 import { AddDayHabitRepository, AddHabitRepository, LoadCompletedHabitsRepository, LoadDayHabitRepository, LoadDayRepository, LoadPossibleHabitsRepository, RemoveDayHabitRepository } from '@/data/protocols'
 import { mockLoadPossibleHabits } from '@/domain/test/mock-habits'
 import faker from 'faker'
 
 export class AddHabitReposistorySpy implements AddHabitRepository {
-	addHabitParams!: AddHabit.Params
+	addHabitParams!: AddHabitRepository.Params
 
-	async addHabit (dataHabit: AddHabit.Params): Promise<AddHabitRepository.Result> {
+	async addHabit (dataHabit: AddHabitRepository.Params): Promise<AddHabitRepository.Result> {
 		this.addHabitParams = dataHabit
 		return { id: faker.datatype.uuid() }
 	}

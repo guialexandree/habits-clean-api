@@ -54,10 +54,7 @@ describe('AddHabit Controller', () => {
 
     await sut.handle(request)
 
-    expect(dbAddHabitSpy.addHabitParams).toEqual({
-			...request,
-			createdAt: new Date()
-		})
+    expect(dbAddHabitSpy.addHabitParams).toEqual(request)
   })
 
 	test('Deve retornar status 400 se Validation falhar', async () => {
