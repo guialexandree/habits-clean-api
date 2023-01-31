@@ -62,11 +62,11 @@ export class HabitSqliteRepository implements AddHabitRepository, LoadPossibleHa
       }
     })
 
-		return day.dayHabits.map(item => item.habit_id)
+		return day?.dayHabits.map(item => item.habit_id)
 	}
 
 	async loadOrCreate (date: Date): Promise<string> {
-		const today = new Date(date)
+		const today = date
 
     let day = await prismaClient.day.findUnique({
       where: {

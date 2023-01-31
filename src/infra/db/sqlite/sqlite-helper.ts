@@ -4,7 +4,7 @@ export const SqliteHelper = {
 
 		return Object.assign({}, {
 			createdAt: created_at,
-			weekDays: weekDays.map(week => week.id)
+			weekDays: weekDays.map(week => week.week_day)
 		}, rest)
 	},
 
