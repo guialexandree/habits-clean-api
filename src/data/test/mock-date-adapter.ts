@@ -12,7 +12,7 @@ export class DateValidatorAdapterSpy implements DateValidator {
 }
 
 export class DateStartTodayAdapterSpy implements DateStartToday {
-	result = new Date()
+	result = new Date(2023, 1, 1)
 
 	startOfToday (): Date {
 		return this.result

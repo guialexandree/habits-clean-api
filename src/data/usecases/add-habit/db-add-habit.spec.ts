@@ -1,7 +1,6 @@
 import { DbAddHabit } from './db-add-habit'
 import { throwError } from '@/domain/test'
 import { AddHabitReposistorySpy, DateStartTodayAdapterSpy } from '@/data/test'
-import MockDate from 'mockdate'
 
 type SutTypes = {
 	sut: DbAddHabit
@@ -22,16 +21,8 @@ const makeSut = (): SutTypes => {
 }
 
 describe('Caso de uso - Adicionar Hábito', () => {
-	beforeAll(() => {
-		MockDate.set(new Date())
-	})
-
-	afterAll(() => {
-		MockDate.reset()
-	})
-
 	test('Deve chamar dbAddHabitRepository com os valores corretos', async () => {
-		const { sut, dbAddReposistorySpy } = makeSut()
+		const { sut, dbAddReposistorySpy, dateAdapterSpy } = makeSut()
 		const addHabitParams = {
 			title: 'txt01',
 			weekDays: [0, 2]
@@ -41,7 +32,7 @@ describe('Caso de uso - Adicionar Hábito', () => {
 
 		expect(dbAddReposistorySpy.addHabitParams).toEqual({
 			...addHabitParams,
-			createdAt: new Date()
+			createdAt: dateAdapterSpy.result
 		})
 	})
 
@@ -69,5 +60,17 @@ describe('Caso de uso - Adicionar Hábito', () => {
 		await sut.add(addHabitParams)
 
 		expect(startOfTodaySpy).toHaveBeenCalled()
+	})
+
+	test('Deve chamar dbAddHabitRepository com a data do dateAdapter', async () => {
+		const { sut, dbAddReposistorySpy, dateAdapterSpy } = makeSut()
+
+		const addHabitParams = {
+			title: 'txt01',
+			weekDays: [0, 2]
+		}
+		await sut.add(addHabitParams)
+
+		expect(dbAddReposistorySpy.addHabitParams.createdAt).toEqual(dateAdapterSpy.result)
 	})
 })
