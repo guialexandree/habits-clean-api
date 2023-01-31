@@ -51,11 +51,12 @@ describe('Caso de uso - Inverte status do hábito na data', () => {
 	describe('toggle()', () => {
 		test('Deve chamar loadDayRepository com a data correta', async () => {
 			const { sut, loadDayRepositorySpy } = makeSut()
-			const date = new Date()
+			const today = new Date()
+			const parsedDate = new Date(today.getFullYear(), today.getMonth(), today.getDate())
 
 			await sut.toggle('any_habit_id')
 
-			expect(loadDayRepositorySpy.date).toEqual(date)
+			expect(loadDayRepositorySpy.date).toEqual(parsedDate)
 		})
 
 		test('Deve propagar o erro se loadDayRepository lançar exceção', async () => {
