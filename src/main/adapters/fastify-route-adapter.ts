@@ -1,11 +1,12 @@
 import { FastifyRequest, FastifyReply } from 'fastify'
 import { Controller } from '@/presentation/protocols'
 
-export const adaptRoute = <T = any, P = { date: string }>(controller: Controller) => {
-  return async (req: FastifyRequest<{ Body: T, Querystring: P }>, res: FastifyReply) => {
+export const adaptRoute = <T = any, Q = any, P = any>(controller: Controller) => {
+  return async (req: FastifyRequest<{ Body: T, Querystring: Q, Params: P }>, res: FastifyReply) => {
     const httpRequest = {
       ...(req.body || {}),
-      ...(req.query || {})
+      ...(req.query || {}),
+      ...(req.params || {})
     }
 
     const httpResponse = await controller.handle(httpRequest)
