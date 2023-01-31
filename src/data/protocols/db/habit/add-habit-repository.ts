@@ -1,11 +1,13 @@
-import { AddHabit } from '@/domain/usecases'
-
 export interface AddHabitRepository {
-	addHabit: (data: AddHabit.Params) => Promise<AddHabitRepository.Result>
+	addHabit: (data: AddHabitRepository.Params) => Promise<AddHabitRepository.Result>
 }
 
 export namespace AddHabitRepository {
-	export type Params = AddHabit.Params
+	export type Params = {
+		title: string
+		weekDays: number[]
+		createdAt: Date
+	}
 
 	export type Result = {
 		id: string

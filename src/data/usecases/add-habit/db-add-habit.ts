@@ -5,7 +5,10 @@ export class DbAddHabit implements AddHabit {
 	constructor (private readonly addHabitReposistory: AddHabitRepository) {}
 
 	async add (dataHabit: AddHabit.Params): Promise<boolean> {
-		await this.addHabitReposistory.addHabit(dataHabit)
+		await this.addHabitReposistory.addHabit({
+			...dataHabit,
+			createdAt: new Date()
+		})
 		return true
 	}
 }

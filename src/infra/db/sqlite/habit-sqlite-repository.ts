@@ -1,4 +1,3 @@
-import { AddHabit } from '@/domain/usecases'
 import {
 	AddHabitRepository,
 	LoadCompletedHabitsRepository,
@@ -12,7 +11,7 @@ import { prismaClient } from './prisma-client'
 import { SqliteHelper } from './sqlite-helper'
 
 export class HabitSqliteRepository implements AddHabitRepository, LoadPossibleHabitsRepository, LoadCompletedHabitsRepository, LoadDayRepository, LoadDayHabitRepository, RemoveDayHabitRepository, AddDayHabitRepository {
-	async addHabit (data: AddHabit.Params): Promise<AddHabitRepository.Result> {
+	async addHabit (data: AddHabitRepository.Params): Promise<AddHabitRepository.Result> {
 		const { title, createdAt, weekDays } = data
 
 		const { id } = await prismaClient.habit.create({

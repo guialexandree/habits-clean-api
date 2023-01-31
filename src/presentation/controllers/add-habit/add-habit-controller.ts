@@ -18,8 +18,7 @@ export class AddHabitController implements Controller {
 			const { title, weekDays } = request
 			await this.dbAddHabit.add({
 				title,
-				weekDays,
-				createdAt: new Date()
+				weekDays
 			})
 
 			return created()
