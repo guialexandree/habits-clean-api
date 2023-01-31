@@ -1,13 +1,11 @@
 import { HabitModel } from '@/domain/model'
 
 export interface LoadHabits {
-	load: (date: Date) => Promise<LoadHabits.Result>
+	load: (date: LoadHabits.Params) => Promise<LoadHabits.Result>
 }
 
 export namespace LoadHabits {
-	export type Params = {
-		date: Date
-	}
+	export type Params = Date
 
 	export type Result = {
 		possibleHabits: HabitModel[]
