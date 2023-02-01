@@ -1,7 +1,7 @@
 import faker from 'faker'
 import { HabitModel, HabitResult } from '@/domain/model'
 
-export const mockHabitModel = (): HabitModel => ({
+const mockHabitModel = (): HabitModel => ({
 	id: faker.datatype.uuid(),
 	title: faker.random.words(5),
 	createdAt: faker.date.recent()

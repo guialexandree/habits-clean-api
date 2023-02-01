@@ -210,4 +210,21 @@ describe('Habit Sqlite Repository', () => {
 			expect(dayHabit.day.date).toEqual(date)
 		})
 	})
+
+	describe('loadYear()', () => {
+		test('Deve retornar resumo geral do ano atual ', async () => {
+			const { sut } = makeSut()
+			await prismaClient.dayHabit.deleteMany({})
+			await prismaClient.day.deleteMany({})
+			const date = new Date('2023-02-01')
+			const dayId = await createDay(date)
+			await createHabit(date, 0, dayId)
+
+			const summary = await sut.loadYear()
+
+			expect(summary[0].id).toBe(dayId)
+			expect(summary[0].completed).toBe(1)
+			expect(summary[0].amount).toBe(0)
+		})
+	})
 })
