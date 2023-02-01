@@ -28,12 +28,20 @@ describe('Caso de uso - Adicionar Hábito', () => {
 		expect(loadSpy).toHaveBeenCalled()
 	})
 
-	test('Deve propagar o erro se dbLoadSummaryRepository lançar exceção', async () => {
+	test('Deve propagar o erro se loadSummaryRepository lançar exceção', async () => {
 		const { sut, loadSummaryRepositorySpy } = makeSut()
 		jest.spyOn(loadSummaryRepositorySpy, 'load').mockImplementationOnce(throwError)
 
 		const promise = sut.load()
 
 		await expect(promise).rejects.toThrow()
+	})
+
+	test('Deve retornar o resultado de loadSummaryRepository com sucesso', async () => {
+		const { sut, loadSummaryRepositorySpy } = makeSut()
+
+		const summary = await sut.load()
+
+		expect(summary).toEqual(loadSummaryRepositorySpy.result)
 	})
 })
