@@ -37,11 +37,12 @@ const date = new Date().toISOString()
 describe('Caso de uso - Adicionar Hábito', () => {
 	describe('loadPossibleHabitsRepository()', () => {
 		test('Deve chamar loadPossibleHabitsRepository com os valores corretos', async () => {
-			const { sut, loadPossibleHabitsRepositorySpy, dateStartOfAdapterSpy } = makeSut()
+			const { sut, loadPossibleHabitsRepositorySpy, dateStartOfAdapterSpy, dateWeekDayAdapterSpy } = makeSut()
 
 			await sut.load(date)
 
 			expect(loadPossibleHabitsRepositorySpy.date).toBe(dateStartOfAdapterSpy.result)
+			expect(loadPossibleHabitsRepositorySpy.weekDay).toBe(dateWeekDayAdapterSpy.result)
 		})
 
 		test('LoadPossibleHabitsRepository deve retornar uma lista de hábitos possíveis', async () => {
