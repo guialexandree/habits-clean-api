@@ -11,13 +11,13 @@ export class DbAddHabitSpy implements AddHabit {
 }
 
 export class DbLoadHabitsSpy implements LoadHabits {
-  dateParams: Date
+  dateParams: string
 	result = {
 		possibleHabits: mockLoadPossibleHabits(),
 		completedHabits: mockLoadCompletedHabits()
 	}
 
-  async load (date: Date): Promise<LoadHabits.Result> {
+  async load (date: string): Promise<LoadHabits.Result> {
     this.dateParams = date
 		return this.result
   }

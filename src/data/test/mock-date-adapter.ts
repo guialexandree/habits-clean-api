@@ -1,15 +1,4 @@
-import { DateValidator } from '@/validation/protocols'
 import { DateStartOf, DateStartToday } from '@/data/protocols'
-
-export class DateValidatorAdapterSpy implements DateValidator {
-	date: string
-	result = true
-
-	isValid (date: string): boolean {
-		this.date = date
-		return this.result
-	}
-}
 
 export class DateStartTodayAdapterSpy implements DateStartToday {
 	result = new Date(2023, 1, 1)
@@ -21,7 +10,7 @@ export class DateStartTodayAdapterSpy implements DateStartToday {
 
 export class DateStartOfAdapterSpy implements DateStartOf {
 	date: string
-	result = new Date()
+	result = new Date(2023, 1, 1)
 
 	startOf (date: string): Date {
 		this.date = date
