@@ -1,7 +1,7 @@
 import { LoadSummaryController } from './load-summary-controller'
-import { LoadSummaryRepositorySpy } from '@/data/test'
 import { throwError } from '@/domain/test'
-import { serverError } from '@/presentation/helpers'
+import { LoadSummaryRepositorySpy } from '@/data/test'
+import { ok, serverError } from '@/presentation/helpers'
 
 type SutTypes = {
 	sut: LoadSummaryController
@@ -37,5 +37,13 @@ describe('AddHabit Controller', () => {
     const response = await sut.handle()
 
     expect(response).toEqual(serverError(new Error()))
+  })
+
+	test('Deve retornar status 200 e o resumo com sucesso', async () => {
+    const { sut, dbLoadSummarySpy } = makeSut()
+
+    const response = await sut.handle()
+
+    expect(response).toEqual(ok(dbLoadSummarySpy.result))
   })
 })
