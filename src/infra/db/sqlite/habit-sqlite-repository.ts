@@ -1,3 +1,4 @@
+import { SummaryModel } from '@/domain/model'
 import {
 	AddHabitRepository,
 	LoadCompletedHabitsRepository,
@@ -5,12 +6,13 @@ import {
 	LoadDayHabitRepository,
 	LoadDayRepository,
 	RemoveDayHabitRepository,
-	AddDayHabitRepository
+	AddDayHabitRepository,
+	LoadSummaryRepository
 } from '@/data/protocols'
 import { prismaClient } from './prisma-client'
 import { SqliteHelper } from './sqlite-helper'
 
-export class HabitSqliteRepository implements AddHabitRepository, LoadPossibleHabitsRepository, LoadCompletedHabitsRepository, LoadDayRepository, LoadDayHabitRepository, RemoveDayHabitRepository, AddDayHabitRepository {
+export class HabitSqliteRepository implements AddHabitRepository, LoadPossibleHabitsRepository, LoadCompletedHabitsRepository, LoadDayRepository, LoadDayHabitRepository, RemoveDayHabitRepository, AddDayHabitRepository, LoadSummaryRepository {
 	async addHabit (data: AddHabitRepository.Params): Promise<AddHabitRepository.Result> {
 		const { title, createdAt, weekDays } = data
 
@@ -112,5 +114,28 @@ export class HabitSqliteRepository implements AddHabitRepository, LoadPossibleHa
 				habit_id: habitId
 			}
 		})
+	}
+
+	async loadYear (): Promise<LoadSummaryRepository.Result> {
+		const summary = await prismaClient.$queryRaw<SummaryModel[]>`
+      SELECT
+        D.id,
+        D.date,
+        (
+          SELECT CAST(COUNT(1) AS FLOAT) 
+          FROM day_habits DH 
+          WHERE DH.day_id = D.id
+        ) AS completed,
+        (
+          SELECT CAST(COUNT(1) AS FLOAT) 
+          FROM habit_week_days HWD 
+          INNER JOIN habits H ON H.id = HWD.habit_id
+          WHERE 
+            HWD.week_day = CAST(strftime('%w', (D.date / 1000.00), 'unixepoch') AS INT)
+            AND h.created_at < D.date
+        ) AS amount
+      FROM days D
+    `
+    return summary
 	}
 }
