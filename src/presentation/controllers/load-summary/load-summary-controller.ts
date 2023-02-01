@@ -1,5 +1,5 @@
 import { Controller, HttpResponse } from '@/presentation/protocols'
-import { serverError } from '@/presentation/helpers'
+import { ok, serverError } from '@/presentation/helpers'
 import { LoadSummary } from '@/domain/usecases'
 
 export class LoadSummaryController implements Controller {
@@ -7,7 +7,8 @@ export class LoadSummaryController implements Controller {
 
 	async handle (): Promise<HttpResponse> {
 		try {
-			await this.dbLoadSummary.load()
+			const summary = await this.dbLoadSummary.load()
+			return ok(summary)
 		} catch (error) {
 			return serverError(error)
 		}
