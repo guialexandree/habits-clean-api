@@ -53,7 +53,7 @@ describe('Caso de uso - Adicionar Hábito', () => {
 			expect(possibleHabits).toEqual(loadPossibleHabitsRepositorySpy.result)
 		})
 
-		test('Deve propagar o erro se dbAddHabitRepository lançar exceção', async () => {
+		test('Deve propagar o erro se AddHabitRepository lançar exceção', async () => {
 			const { sut, loadPossibleHabitsRepositorySpy } = makeSut()
 			jest.spyOn(loadPossibleHabitsRepositorySpy, 'loadByDateAndWeekDay').mockImplementationOnce(throwError)
 
