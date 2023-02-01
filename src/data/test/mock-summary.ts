@@ -5,7 +5,7 @@ import { mockSummaryModel } from '@/domain/test'
 export class LoadSummaryRepositorySpy implements LoadSummaryRepository {
 	result = [mockSummaryModel()]
 
-	async load (): Promise<SummaryModel[]> {
+	async loadYear (): Promise<SummaryModel[]> {
 		return this.result
 	}
 }
