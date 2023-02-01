@@ -16,14 +16,8 @@ export class LoadHabitsController implements Controller {
 			}
 
 			const { date } = request
-			const parsedDate = new Date(
-				Number(date.substring(0, 4)),
-				Number(date.substring(5, 7)) - 1,
-				Number(date.substring(8, 10)),
-				23, 59, 59, 999
-			)
+			const habits = await this.dbLoadHabits.load(date)
 
-			const habits = await this.dbLoadHabits.load(parsedDate)
 			return ok(habits)
 		} catch (error) {
 			return serverError(error)

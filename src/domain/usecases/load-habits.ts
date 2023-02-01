@@ -5,7 +5,7 @@ export interface LoadHabits {
 }
 
 export namespace LoadHabits {
-	export type Params = Date
+	export type Params = string
 
 	export type Result = {
 		possibleHabits: HabitModel[]

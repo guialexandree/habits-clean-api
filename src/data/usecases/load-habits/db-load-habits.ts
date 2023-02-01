@@ -7,7 +7,7 @@ export class DbLoadHabits implements LoadHabits {
 		private readonly loadCompletedHabitsRepository: LoadCompletedHabitsRepository
 	) {}
 
-	async load (date: Date): Promise<LoadHabits.Result> {
+	async load (date: string): Promise<LoadHabits.Result> {
 		const possibleHabits = await this.loadPossibleHabitsRepository.loadByDateAndWeekDay(date, date.getDay())
 		const completedHabits = await this.loadCompletedHabitsRepository.loadByDate(date)
 
