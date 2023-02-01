@@ -1,15 +1,17 @@
 import { LoadHabits } from '@/domain/usecases'
-import { LoadCompletedHabitsRepository, LoadPossibleHabitsRepository } from '@/data/protocols'
+import { DateStartOf, LoadCompletedHabitsRepository, LoadPossibleHabitsRepository } from '@/data/protocols'
 
 export class DbLoadHabits implements LoadHabits {
 	constructor (
 		private readonly loadPossibleHabitsRepository: LoadPossibleHabitsRepository,
-		private readonly loadCompletedHabitsRepository: LoadCompletedHabitsRepository
+		private readonly loadCompletedHabitsRepository: LoadCompletedHabitsRepository,
+		private readonly dateAdapter: DateStartOf
 	) {}
 
 	async load (date: string): Promise<LoadHabits.Result> {
-		const possibleHabits = await this.loadPossibleHabitsRepository.loadByDateAndWeekDay(date, date.getDay())
-		const completedHabits = await this.loadCompletedHabitsRepository.loadByDate(date)
+		const today = this.dateAdapter.startOf(date)
+		const possibleHabits = await this.loadPossibleHabitsRepository.loadByDateAndWeekDay(today, today.getDay())
+		const completedHabits = await this.loadCompletedHabitsRepository.loadByDate(today)
 
 		return {
 			possibleHabits: possibleHabits ?? [],
