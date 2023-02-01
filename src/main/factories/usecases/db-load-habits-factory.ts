@@ -7,5 +7,10 @@ export const makeDbLoadHabits = (): LoadHabits => {
 	const habitsRepository = new HabitSqliteRepository()
 	const dateAdapter = new DateAdapter()
 
-	return new DbLoadHabits(habitsRepository, habitsRepository, dateAdapter)
+	return new DbLoadHabits(
+		habitsRepository,
+		habitsRepository,
+		dateAdapter,
+		dateAdapter
+		)
 }
