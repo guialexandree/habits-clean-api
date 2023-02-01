@@ -44,4 +44,16 @@ describe('Caso de uso - Adicionar Hábito', () => {
 
 		expect(summary).toEqual(loadSummaryRepositorySpy.result)
 	})
+
+	test('Deve retornar um lista vazia se o repositório não retornar dados', async () => {
+		const { sut, loadSummaryRepositorySpy } = makeSut()
+		loadSummaryRepositorySpy.result = null
+
+		let summary = await sut.load()
+		expect(summary).toEqual([])
+
+		loadSummaryRepositorySpy.result = undefined
+		summary = await sut.load()
+		expect(summary).toEqual([])
+	})
 })
