@@ -5,7 +5,8 @@ module.exports = {
 		'!<rootDir>/src/main/**',
 		'!<rootDir>/src/**/*protocols.ts',
 		'!<rootDir>/src/**/*protocols/index.ts',
-		'!<rootDir>/src/**/index.ts'
+		'!<rootDir>/src/**/index.ts',
+		'!<rootDir>/src/**/test-helpers.ts'
 	],
 	coverageDirectory: 'coverage',
 	watchPathIgnorePatterns: ['globalConfig'],
