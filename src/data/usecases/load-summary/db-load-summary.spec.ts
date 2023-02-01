@@ -1,4 +1,5 @@
 import { DbLoadSummary } from './db-load-summary'
+import { throwError } from '@/domain/test'
 import { LoadSummaryRepositorySpy } from '@/data/test'
 
 type SutTypes = {
@@ -25,5 +26,14 @@ describe('Caso de uso - Adicionar Hábito', () => {
 		await sut.load()
 
 		expect(loadSpy).toHaveBeenCalled()
+	})
+
+	test('Deve propagar o erro se dbLoadSummaryRepository lançar exceção', async () => {
+		const { sut, loadSummaryRepositorySpy } = makeSut()
+		jest.spyOn(loadSummaryRepositorySpy, 'load').mockImplementationOnce(throwError)
+
+		const promise = sut.load()
+
+		await expect(promise).rejects.toThrow()
 	})
 })
