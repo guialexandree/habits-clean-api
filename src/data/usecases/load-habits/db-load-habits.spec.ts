@@ -115,11 +115,19 @@ describe('Caso de uso - Adicionar Hábito', () => {
 			})
 	})
 
-	test('Deve chamar dataAdapter com o valor correto', async () => {
+	test('Deve chamar dateStartOfAdapterSpy com o valor correto', async () => {
 		const { sut, dateStartOfAdapterSpy } = makeSut()
 
 		await sut.load(date)
 
 		expect(dateStartOfAdapterSpy.date).toEqual(date)
+	})
+
+	test('Deve chamar dateWeekDayAdapterSpy com o valor correto', async () => {
+		const { sut, dateWeekDayAdapterSpy, dateStartOfAdapterSpy } = makeSut()
+
+		await sut.load(date)
+
+		expect(dateWeekDayAdapterSpy.date).toEqual(dateStartOfAdapterSpy.result)
 	})
 })
