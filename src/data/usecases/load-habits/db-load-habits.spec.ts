@@ -1,25 +1,34 @@
 import { DbLoadHabits } from './db-load-habits'
 import { throwError } from '@/domain/test'
-import { DateStartOfAdapterSpy, LoadCompletedHabitsRepositorySpy, LoadPossibleHabitsRepositorySpy } from '@/data/test'
+import { DateStartOfAdapterSpy, DateWeekDayAdapterSpy, LoadCompletedHabitsRepositorySpy, LoadPossibleHabitsRepositorySpy } from '@/data/test'
 
 type SutTypes = {
 	sut: DbLoadHabits
 	loadPossibleHabitsRepositorySpy: LoadPossibleHabitsRepositorySpy
 	loadCompletedHabitsRepositorySpy: LoadCompletedHabitsRepositorySpy
-	dateAdapterSpy: DateStartOfAdapterSpy
+	dateStartOfAdapterSpy: DateStartOfAdapterSpy
+	dateWeekDayAdapterSpy: DateWeekDayAdapterSpy
 }
 
 const makeSut = (): SutTypes => {
 	const loadPossibleHabitsRepositorySpy = new LoadPossibleHabitsRepositorySpy()
 	const loadCompletedHabitsRepositorySpy = new LoadCompletedHabitsRepositorySpy()
-	const dateAdapterSpy = new DateStartOfAdapterSpy()
-	const sut = new DbLoadHabits(loadPossibleHabitsRepositorySpy, loadCompletedHabitsRepositorySpy, dateAdapterSpy)
+	const dateStartOfAdapterSpy = new DateStartOfAdapterSpy()
+	const dateWeekDayAdapterSpy = new DateWeekDayAdapterSpy()
+
+	const sut = new DbLoadHabits(
+		loadPossibleHabitsRepositorySpy,
+		loadCompletedHabitsRepositorySpy,
+		dateStartOfAdapterSpy,
+		dateWeekDayAdapterSpy
+		)
 
 	return {
 		sut,
 		loadPossibleHabitsRepositorySpy,
 		loadCompletedHabitsRepositorySpy,
-		dateAdapterSpy
+		dateStartOfAdapterSpy,
+		dateWeekDayAdapterSpy
 	}
 }
 
@@ -28,11 +37,11 @@ const date = new Date().toISOString()
 describe('Caso de uso - Adicionar Hábito', () => {
 	describe('loadPossibleHabitsRepository()', () => {
 		test('Deve chamar loadPossibleHabitsRepository com os valores corretos', async () => {
-			const { sut, loadPossibleHabitsRepositorySpy, dateAdapterSpy } = makeSut()
+			const { sut, loadPossibleHabitsRepositorySpy, dateStartOfAdapterSpy } = makeSut()
 
 			await sut.load(date)
 
-			expect(loadPossibleHabitsRepositorySpy.date).toBe(dateAdapterSpy.result)
+			expect(loadPossibleHabitsRepositorySpy.date).toBe(dateStartOfAdapterSpy.result)
 		})
 
 		test('LoadPossibleHabitsRepository deve retornar uma lista de hábitos possíveis', async () => {
@@ -55,11 +64,11 @@ describe('Caso de uso - Adicionar Hábito', () => {
 
 	describe('loadCompletedHabitsRepository()', () => {
 		test('Deve chamar loadCompletedHabitsRepositorySpy com os valores corretos', async () => {
-			const { sut, loadCompletedHabitsRepositorySpy, dateAdapterSpy } = makeSut()
+			const { sut, loadCompletedHabitsRepositorySpy, dateStartOfAdapterSpy } = makeSut()
 
 			await sut.load(date)
 
-			expect(loadCompletedHabitsRepositorySpy.date).toBe(dateAdapterSpy.result)
+			expect(loadCompletedHabitsRepositorySpy.date).toBe(dateStartOfAdapterSpy.result)
 		})
 
 		test('LoadCompletedHabitRepository deve retornar uma lista de ids realizados', async () => {
@@ -107,10 +116,10 @@ describe('Caso de uso - Adicionar Hábito', () => {
 	})
 
 	test('Deve chamar dataAdapter com o valor correto', async () => {
-		const { sut, dateAdapterSpy } = makeSut()
+		const { sut, dateStartOfAdapterSpy } = makeSut()
 
 		await sut.load(date)
 
-		expect(dateAdapterSpy.date).toEqual(date)
+		expect(dateStartOfAdapterSpy.date).toEqual(date)
 	})
 })
