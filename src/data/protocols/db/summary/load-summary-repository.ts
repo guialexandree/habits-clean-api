@@ -1,7 +1,7 @@
 import { SummaryModel } from '@/domain/model'
 
 export interface LoadSummaryRepository {
-	load: () => Promise<LoadSummaryRepository.Result>
+	loadYear: () => Promise<LoadSummaryRepository.Result>
 }
 
 export namespace LoadSummaryRepository {

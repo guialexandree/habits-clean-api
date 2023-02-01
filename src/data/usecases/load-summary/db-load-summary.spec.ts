@@ -21,7 +21,7 @@ const makeSut = (): SutTypes => {
 describe('Caso de uso - Adicionar Hábito', () => {
 	test('Deve chamar loadSummaryRepository com os valores corretos', async () => {
 		const { sut, loadSummaryRepositorySpy } = makeSut()
-		const loadSpy = jest.spyOn(loadSummaryRepositorySpy, 'load')
+		const loadSpy = jest.spyOn(loadSummaryRepositorySpy, 'loadYear')
 
 		await sut.load()
 
@@ -30,7 +30,7 @@ describe('Caso de uso - Adicionar Hábito', () => {
 
 	test('Deve propagar o erro se loadSummaryRepository lançar exceção', async () => {
 		const { sut, loadSummaryRepositorySpy } = makeSut()
-		jest.spyOn(loadSummaryRepositorySpy, 'load').mockImplementationOnce(throwError)
+		jest.spyOn(loadSummaryRepositorySpy, 'loadYear').mockImplementationOnce(throwError)
 
 		const promise = sut.load()
 
