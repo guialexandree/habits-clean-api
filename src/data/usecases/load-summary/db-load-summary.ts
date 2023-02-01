@@ -9,6 +9,6 @@ export class DbLoadSummary implements LoadSummary {
 	async load (): Promise<LoadSummary.Result> {
 		const summary = await this.loadSummaryRepository.load()
 
-		return summary
+		return summary ?? []
 	}
 }
