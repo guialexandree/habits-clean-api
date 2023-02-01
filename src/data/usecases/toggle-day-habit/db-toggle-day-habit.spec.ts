@@ -3,6 +3,7 @@ import { DbToggleDayHabit } from './db-toggle-day-habit'
 import { throwError } from '@/domain/test'
 import {
 	AddDayHabitRepositorySpy,
+	DateStartTodayAdapterSpy,
 	LoadDayHabitRepositorySpy,
 	LoadDayRepositorySpy,
 	RemoveDayHabitRepositorySpy
@@ -15,6 +16,7 @@ type SutTypes = {
 	loadDayHabitRepositorySpy: LoadDayHabitRepositorySpy
 	removeDayHabitRepositorySpy: RemoveDayHabitRepositorySpy
 	addDayHabitRepositorySpy: AddDayHabitRepositorySpy
+	dateAdapterSpy: DateStartTodayAdapterSpy
 }
 
 const makeSut = (): SutTypes => {
@@ -22,12 +24,14 @@ const makeSut = (): SutTypes => {
 	const loadDayHabitRepositorySpy = new LoadDayHabitRepositorySpy()
 	const removeDayHabitRepositorySpy = new RemoveDayHabitRepositorySpy()
 	const addDayHabitRepositorySpy = new AddDayHabitRepositorySpy()
+	const dateAdapterSpy = new DateStartTodayAdapterSpy()
 
 	const sut = new DbToggleDayHabit(
 		loadDayRepositorySpy,
 		loadDayHabitRepositorySpy,
 		removeDayHabitRepositorySpy,
-		addDayHabitRepositorySpy
+		addDayHabitRepositorySpy,
+		dateAdapterSpy
 	)
 
 	return {
@@ -35,7 +39,8 @@ const makeSut = (): SutTypes => {
 		loadDayRepositorySpy,
 		loadDayHabitRepositorySpy,
 		removeDayHabitRepositorySpy,
-		addDayHabitRepositorySpy
+		addDayHabitRepositorySpy,
+		dateAdapterSpy
 	}
 }
 
@@ -50,13 +55,11 @@ describe('Caso de uso - Inverte status do hábito na data', () => {
 
 	describe('toggle()', () => {
 		test('Deve chamar loadDayRepository com a data correta', async () => {
-			const { sut, loadDayRepositorySpy } = makeSut()
-			const today = new Date()
-			const parsedDate = new Date(today.getFullYear(), today.getMonth(), today.getDate())
+			const { sut, loadDayRepositorySpy, dateAdapterSpy } = makeSut()
 
 			await sut.toggle('any_habit_id')
 
-			expect(loadDayRepositorySpy.date).toEqual(parsedDate)
+			expect(loadDayRepositorySpy.date).toEqual(dateAdapterSpy.result)
 		})
 
 		test('Deve propagar o erro se loadDayRepository lançar exceção', async () => {
@@ -139,6 +142,15 @@ describe('Caso de uso - Inverte status do hábito na data', () => {
 			await sut.toggle('any_habit_id')
 
 			expect(addDayHabitRepositorySpy.callsCount).toBe(0)
+		})
+
+		test('Deve chamar dateAdapter para obter data atual', async () => {
+			const { sut, dateAdapterSpy } = makeSut()
+			const startOfTodaySpy = jest.spyOn(dateAdapterSpy, 'startOfToday')
+
+			await sut.toggle('any_habit_id')
+
+			expect(startOfTodaySpy).toHaveBeenCalled()
 		})
 	})
 })
