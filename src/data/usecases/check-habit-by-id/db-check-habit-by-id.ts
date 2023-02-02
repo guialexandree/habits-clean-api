@@ -7,6 +7,7 @@ export class DbCheckHabitById implements CheckHabitById {
 	) {}
 
 	async checkById (habitId: string): Promise<CheckHabitById.Result> {
-		return null
+		const isValid = await this.checkHabitByIdRepository.checkById(habitId)
+		return isValid
 	}
 }
