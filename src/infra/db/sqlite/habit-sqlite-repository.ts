@@ -7,12 +7,13 @@ import {
 	LoadDayRepository,
 	RemoveDayHabitRepository,
 	AddDayHabitRepository,
-	LoadSummaryRepository
+	LoadSummaryRepository,
+	CheckHabitByIdRepository
 } from '@/data/protocols'
 import { prismaClient } from './prisma-client'
 import { SqliteHelper } from './sqlite-helper'
 
-export class HabitSqliteRepository implements AddHabitRepository, LoadPossibleHabitsRepository, LoadCompletedHabitsRepository, LoadDayRepository, LoadDayHabitRepository, RemoveDayHabitRepository, AddDayHabitRepository, LoadSummaryRepository {
+export class HabitSqliteRepository implements AddHabitRepository, LoadPossibleHabitsRepository, LoadCompletedHabitsRepository, LoadDayRepository, LoadDayHabitRepository, RemoveDayHabitRepository, AddDayHabitRepository, LoadSummaryRepository, CheckHabitByIdRepository {
 	async addHabit (data: AddHabitRepository.Params): Promise<AddHabitRepository.Result> {
 		const { title, createdAt, weekDays } = data
 
@@ -137,5 +138,15 @@ export class HabitSqliteRepository implements AddHabitRepository, LoadPossibleHa
       FROM days D
     `
     return summary
+	}
+
+	async checkById (habitId: string): Promise<CheckHabitByIdRepository.Result> {
+		const habit = await prismaClient.habit.findUnique({
+			where: {
+				id: habitId
+			}
+		})
+
+		return !!habit
 	}
 }
