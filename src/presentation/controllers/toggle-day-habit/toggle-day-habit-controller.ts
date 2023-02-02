@@ -1,11 +1,12 @@
-import { ToggleDayHabit } from '@/domain/usecases'
+import { CheckHabitById, ToggleDayHabit } from '@/domain/usecases'
 import { badRequest, ok, serverError } from '@/presentation/helpers'
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
 
 export class ToggleDayHabitController implements Controller {
 	constructor (
 		private readonly validation: Validation,
-		private readonly dbToggleDayHabit: ToggleDayHabit
+		private readonly dbToggleDayHabit: ToggleDayHabit,
+		private readonly dbCheckHabitById: CheckHabitById
 	) {}
 
 	async handle (request: ToggleDayHabitController.Request): Promise<HttpResponse> {
@@ -14,8 +15,8 @@ export class ToggleDayHabitController implements Controller {
 			if (error) {
 				return badRequest(error)
 			}
-
 			const { habitId } = request
+			await this.dbCheckHabitById.checkById(habitId)
 			await this.dbToggleDayHabit.toggle(habitId)
 
 			return ok(null)
