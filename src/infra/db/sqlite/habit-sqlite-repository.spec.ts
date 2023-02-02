@@ -227,4 +227,19 @@ describe('Habit Sqlite Repository', () => {
 			expect(summary[0].amount).toBe(0)
 		})
 	})
+
+	describe('checkById()', () => {
+		test('Deve retornar true caso exista hábito com id fornecido', async () => {
+			const { sut } = makeSut()
+			await prismaClient.dayHabit.deleteMany({})
+			await prismaClient.day.deleteMany({})
+			const date = new Date('2023-02-01')
+			const dayId = await createDay(date)
+			const habitId = await createHabit(date, 0, dayId)
+
+			const isValid = await sut.checkById(habitId)
+
+			expect(isValid).toBe(true)
+		})
+	})
 })
