@@ -1,4 +1,5 @@
 export * from './add-habit'
 export * from './load-habits'
 export * from './toggle-day-habit'
+export * from './check-exist-habit'
 export * from './load-summary'
