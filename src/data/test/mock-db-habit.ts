@@ -1,4 +1,13 @@
-import { AddDayHabitRepository, AddHabitRepository, LoadCompletedHabitsRepository, LoadDayHabitRepository, LoadDayRepository, LoadPossibleHabitsRepository, RemoveDayHabitRepository } from '@/data/protocols'
+import {
+	AddDayHabitRepository,
+	AddHabitRepository,
+	CheckHabitByIdRepository,
+	LoadCompletedHabitsRepository,
+	LoadDayHabitRepository,
+	LoadDayRepository,
+	LoadPossibleHabitsRepository,
+	RemoveDayHabitRepository
+} from '@/data/protocols'
 import { mockLoadPossibleHabits } from '@/domain/test/mock-habits'
 import faker from 'faker'
 
@@ -78,5 +87,14 @@ export class AddDayHabitRepositorySpy implements AddDayHabitRepository {
 		this.habitId = habitId
 		this.dayId = dayId
 		this.callsCount++
+	}
+}
+
+export class CheckHabitByIdRepositorySpy implements CheckHabitByIdRepository {
+	habitId: string
+
+	async checkById (habitId: string): Promise<CheckHabitByIdRepository.Result> {
+		this.habitId = habitId
+		return true
 	}
 }
