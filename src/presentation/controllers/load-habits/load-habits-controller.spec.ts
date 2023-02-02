@@ -1,5 +1,5 @@
 import { LoadHabitsController } from './load-habits-controller'
-import { DbLoadHabitsSpy, ValidationSpy } from '@/presentation/test'
+import { LoadHabitsSpy, ValidationSpy } from '@/presentation/test'
 import { badRequest, ok, serverError } from '@/presentation/helpers'
 import { throwError } from '@/domain/test'
 import MockDate from 'mockdate'
@@ -12,12 +12,12 @@ const mockRequest = (): LoadHabitsController.Request => ({
 type SutTypes = {
 	sut: LoadHabitsController
 	validationSpy: ValidationSpy
-	dbLoadHabitsSpy: DbLoadHabitsSpy
+	dbLoadHabitsSpy: LoadHabitsSpy
 }
 
 const makeSut = (): SutTypes => {
 	const validationSpy = new ValidationSpy()
-	const dbLoadHabitsSpy = new DbLoadHabitsSpy()
+	const dbLoadHabitsSpy = new LoadHabitsSpy()
 	const sut = new LoadHabitsController(validationSpy, dbLoadHabitsSpy)
 
 	return {

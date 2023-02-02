@@ -1,15 +1,15 @@
 import { LoadSummaryController } from './load-summary-controller'
 import { throwError } from '@/domain/test'
 import { ok, serverError } from '@/presentation/helpers'
-import { DbLoadSummaryStub } from '@/presentation/test'
+import { LoadSummaryStub } from '@/presentation/test'
 
 type SutTypes = {
 	sut: LoadSummaryController
-	dbLoadSummarySpy: DbLoadSummaryStub
+	dbLoadSummarySpy: LoadSummaryStub
 }
 
 const makeSut = (): SutTypes => {
-	const dbLoadSummarySpy = new DbLoadSummaryStub()
+	const dbLoadSummarySpy = new LoadSummaryStub()
 	const sut = new LoadSummaryController(dbLoadSummarySpy)
 
 	return {

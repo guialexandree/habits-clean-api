@@ -1,7 +1,7 @@
 import { AddHabit, CheckHabitById, LoadHabits } from '@/domain/usecases'
 import { mockLoadCompletedHabits, mockLoadPossibleHabits } from '@/domain/test'
 
-export class DbAddHabitSpy implements AddHabit {
+export class AddHabitSpy implements AddHabit {
   addHabitParams: AddHabit.Params
 
   async add (addHabitParams: AddHabit.Params): Promise<boolean> {
@@ -10,7 +10,7 @@ export class DbAddHabitSpy implements AddHabit {
   }
 }
 
-export class DbLoadHabitsSpy implements LoadHabits {
+export class LoadHabitsSpy implements LoadHabits {
   dateParams: string
 	result = {
 		possibleHabits: mockLoadPossibleHabits(),
@@ -23,11 +23,12 @@ export class DbLoadHabitsSpy implements LoadHabits {
   }
 }
 
-export class DbCheckHabitByIdSpy implements CheckHabitById {
+export class CheckHabitByIdSpy implements CheckHabitById {
   habitId: string
+	result = true
 
   async checkById (habitId: string): Promise<CheckHabitById.Result> {
     this.habitId = habitId
-		return true
+		return this.result
   }
 }

@@ -1,6 +1,6 @@
 import { AddHabitController } from './add-habit-controller'
 import { throwError } from '@/domain/test'
-import { DbAddHabitSpy, ValidationSpy } from '@/presentation/test'
+import { AddHabitSpy, ValidationSpy } from '@/presentation/test'
 import { badRequest, created, serverError } from '@/presentation/helpers'
 import MockDate from 'mockdate'
 import faker from 'faker'
@@ -15,12 +15,12 @@ const mockRequest = (): AddHabitController.Request => {
 type SutTypes = {
 	sut: AddHabitController
 	validationSpy: ValidationSpy
-	dbAddHabitSpy: DbAddHabitSpy
+	dbAddHabitSpy: AddHabitSpy
 }
 
 const makeSut = (): SutTypes => {
 	const validationSpy = new ValidationSpy()
-	const dbAddHabitSpy = new DbAddHabitSpy()
+	const dbAddHabitSpy = new AddHabitSpy()
 	const sut = new AddHabitController(validationSpy, dbAddHabitSpy)
 
 	return {

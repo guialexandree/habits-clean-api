@@ -1,5 +1,6 @@
 import { CheckHabitById, ToggleDayHabit } from '@/domain/usecases'
-import { badRequest, ok, serverError } from '@/presentation/helpers'
+import { InvalidParamError } from '@/presentation/errors'
+import { badRequest, forbidden, ok, serverError } from '@/presentation/helpers'
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
 
 export class ToggleDayHabitController implements Controller {
@@ -16,7 +17,12 @@ export class ToggleDayHabitController implements Controller {
 				return badRequest(error)
 			}
 			const { habitId } = request
-			await this.dbCheckHabitById.checkById(habitId)
+
+			const isValid = await this.dbCheckHabitById.checkById(habitId)
+			if (!isValid) {
+				return forbidden(new InvalidParamError('surveyId'))
+			}
+
 			await this.dbToggleDayHabit.toggle(habitId)
 
 			return ok(null)
