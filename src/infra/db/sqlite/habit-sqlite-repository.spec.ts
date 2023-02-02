@@ -241,5 +241,15 @@ describe('Habit Sqlite Repository', () => {
 
 			expect(isValid).toBe(true)
 		})
+
+		test('Deve retornar false caso não exista hábito com id fornecido', async () => {
+			const { sut } = makeSut()
+			await prismaClient.dayHabit.deleteMany({})
+			await prismaClient.day.deleteMany({})
+
+			const isValid = await sut.checkById('any_habit')
+
+			expect(isValid).toBe(false)
+		})
 	})
 })
