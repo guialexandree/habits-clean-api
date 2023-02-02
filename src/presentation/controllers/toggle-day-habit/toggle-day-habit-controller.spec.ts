@@ -1,5 +1,5 @@
 import { ToggleDayHabitController } from './toggle-day-habit-controller'
-import { DbToggleDayHabitSpy, ValidationSpy } from '@/presentation/test'
+import { DbCheckHabitByIdSpy, DbToggleDayHabitSpy, ValidationSpy } from '@/presentation/test'
 import { badRequest, ok, serverError } from '@/presentation/helpers'
 import { throwError } from '@/domain/test'
 import MockDate from 'mockdate'
@@ -13,17 +13,20 @@ type SutTypes = {
 	sut: ToggleDayHabitController
 	validationSpy: ValidationSpy
 	dbToggleDayHabitSpy: DbToggleDayHabitSpy
+	dbcheckHabitByIdSpy: DbCheckHabitByIdSpy
 }
 
 const makeSut = (): SutTypes => {
 	const validationSpy = new ValidationSpy()
 	const dbToggleDayHabitSpy = new DbToggleDayHabitSpy()
-	const sut = new ToggleDayHabitController(validationSpy, dbToggleDayHabitSpy)
+	const dbcheckHabitByIdSpy = new DbCheckHabitByIdSpy()
+	const sut = new ToggleDayHabitController(validationSpy, dbToggleDayHabitSpy, dbcheckHabitByIdSpy)
 
 	return {
 		sut,
 		validationSpy,
-		dbToggleDayHabitSpy
+		dbToggleDayHabitSpy,
+		dbcheckHabitByIdSpy
 	}
 }
 
@@ -52,6 +55,15 @@ describe('AddHabit Controller', () => {
     await sut.handle(request)
 
     expect(dbToggleDayHabitSpy.habitId).toBe(request.habitId)
+  })
+
+	test('Deve chamar CheckHabitById com o habitId correto', async () => {
+    const { sut, dbcheckHabitByIdSpy } = makeSut()
+    const request = mockRequest()
+
+    await sut.handle(request)
+
+    expect(dbcheckHabitByIdSpy.habitId).toBe(request.habitId)
   })
 
 	test('Deve retornar status 400 se Validation falhar', async () => {
