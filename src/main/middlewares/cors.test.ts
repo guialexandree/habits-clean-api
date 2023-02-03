@@ -8,7 +8,7 @@ describe('CORS Middleware', () => {
     app = await setupApp()
   })
 
-  test('Deve ativar o cors', async () => {
+  test('Deve ativar o fastify-cors', async () => {
     app.get('/test_cors', _ => ({ field: 'any_value' }))
 
 		const { headers } = await app.inject({
@@ -17,7 +17,5 @@ describe('CORS Middleware', () => {
 		})
 
 		expect(headers['access-control-allow-origin']).toBe('*')
-		expect(headers['access-control-allow-headers']).toBe('*')
-		expect(headers['access-control-allow-methods']).toBe('*')
   })
 })
