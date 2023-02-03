@@ -9,7 +9,7 @@
     "build": "tsc -p tsconfig-build.json",
     "pre-commit": "lint-staged",
 		"ci": "npx prisma generate",
-		"reset": "npx prisma migrate reset --force",
+		"ci:reset": "npx prisma migrate reset --force",
     "test": "jest --passWithNoTests --runInBand",
     "test:clear": "jest --passWithNoTests --noStackTrace --runInBand --clearCache",
     "test:dev": "jest --passWithNoTests -c jest-unit-config.js",
