@@ -53,7 +53,7 @@ jobs:
     - name: Download math result for job 1
       uses: actions/download-artifact@v3
       with:
-          name: build
+          name: dist
 
     - run: ls -la
     - run: npm run ci
