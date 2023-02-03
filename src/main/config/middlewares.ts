@@ -1,6 +1,6 @@
 import { FastifyInstance } from 'fastify'
-import { cors } from '@/main/middlewares'
+import cors from '@fastify/cors'
 
 export default (app: FastifyInstance): void => {
-  void app.addHook('onRequest', cors)
+  void app.register(cors)
 }
