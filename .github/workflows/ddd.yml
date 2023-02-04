@@ -33,7 +33,7 @@ jobs:
         SOURCE: "dist/"
         REMOTE_HOST: ${{ secrets.AWS_API_HOST }}
         REMOTE_USER: ${{ secrets.AWS_API_USER }}
-        TARGET: ${{ vars.AWS_API_TARGET }}
+        TARGET: "${{ vars.AWS_API_TARGET }}/src"
         EXCLUDE: "/dist/, /node_modules/"
 
     - name: Login AWS EC2 Ubuntu
@@ -45,5 +45,14 @@ jobs:
         REMOTE_HOST: ${{ secrets.AWS_API_HOST }}
         REMOTE_USER: ${{ secrets.AWS_API_USER }}
         TARGET: "${{ vars.AWS_API_TARGET }}/prisma"
-        EXCLUDE: "/dist/, /node_modules/"
+
+    - name: Login AWS EC2 Ubuntu
+      uses: easingthemes/ssh-deploy@main
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.AWS_API_PRIVATE_KEY  }}
+        ARGS: "-rlgoDzvc -i --delete"
+        SOURCE: "package.json"
+        REMOTE_HOST: ${{ secrets.AWS_API_HOST }}
+        REMOTE_USER: ${{ secrets.AWS_API_USER }}
+        TARGET: "${{ vars.AWS_API_TARGET }}/src"
 
