@@ -12,17 +12,20 @@ jobs:
     name: Deploy AWS EC2
 
     steps:
+    - name: Checkout the code
+      uses: actions/checkout@v3
 
     - name: Use Node.js 16.x
       uses: actions/setup-node@v3
       with:
         node-version: 16.18.x
 
-    - run: ls -la
+    - run: npm install
+    - run: npm run build
     - run: ls .. -la
     - run: ls ../.. -la
     - run: ls ../../.. -la
-    - run: ls ../../../work/habits-clean-api -la
+    - run: ls ../../../work/ habits-clean-api -la
     - run: ls / -la
 
     - name: Login AWS EC2 Ubuntu
