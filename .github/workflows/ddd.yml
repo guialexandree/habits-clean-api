@@ -33,6 +33,7 @@ jobs:
         mv src/ habits-backend-build/src/
         mv prisma/ habits-backend-build/prisma/
         mv package.json habits-backend-build/
+        echo "PORT=${{ vars.AWS_API_PORT }}" > habits-backend-build/.env
 
     - name: Upload da pasta dist
       uses: actions/upload-artifact@v3
@@ -58,11 +59,8 @@ jobs:
         name: habits-backend-build
         path: habits-backend-build/
 
-    - name: Install Dependencies
-      run: |
-        echo "PORT=${{ vars.AWS_API_PORT }}" > habits-backend-build/.env
-        cd habits-backend-build 
-        npm install
+    - name: Createa file Environment
+      run: echo "PORT=${{ vars.AWS_API_PORT }}" > habits-backend-build/.env
 
     - name: Login AWS EC2 Ubuntu
       uses: easingthemes/ssh-deploy@main
@@ -73,5 +71,5 @@ jobs:
         REMOTE_HOST: ${{ secrets.AWS_API_HOST }}
         REMOTE_USER: ${{ secrets.AWS_API_USER }}
         TARGET: "${{ vars.AWS_API_TARGET }}"
-        EXCLUDE: "/habits-backend-build/"
+        EXCLUDE: "/habits-backend-build/, /node_modules/"
 
