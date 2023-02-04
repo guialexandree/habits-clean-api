@@ -5,14 +5,13 @@ on:
     branches: [development]
 
 jobs:
-  Sast-Njsscan:
+  Sast-Production:
     runs-on: ubuntu-latest
-    name: njsscan code scanning
+    name: CodeQL Scan
 
     permissions:
-      contents: read
       security-events: write
-      actions: read
+
     steps:
     - name: Checkout the code
       uses: actions/checkout@v3
@@ -28,34 +27,20 @@ jobs:
       with:
         sarif_file: results.sarif
 
-  CodeQL-Build:
-    runs-on: ubuntu-latest
-    name: Run CodeQL Scan Javascript
-    needs: [Sast-Njsscan]
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v2
+      with:
+        languages: javascript
 
-    permissions:
-      security-events: write
+    - name: Autobuild
+      uses: github/codeql-action/autobuild@v2
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v2
-        with:
-          languages: javascript
-
-      # Autobuild attempts to build any compiled languages (C/C++, C#, Go, or Java).
-      # If this step fails, then you should remove it and run the build manually (see below).
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v2
-
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v2
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
 
   Build-Production:
     runs-on: ubuntu-latest
-    name: Build in ubuntu
+    name: Build ubuntu
     needs: [CodeQL-Build]
 
     strategy:
@@ -83,7 +68,7 @@ jobs:
 
   Coverage-Tests:
     runs-on: ubuntu-latest
-    name: Run tests units and integration
+    name: Coverage Tests
     needs: [Build-Production]
 
     strategy:
