@@ -41,7 +41,7 @@ jobs:
   Build-Production:
     runs-on: ubuntu-latest
     name: Build ubuntu
-    needs: [CodeQL-Build]
+    needs: [Sast-Production]
 
     strategy:
       matrix:
