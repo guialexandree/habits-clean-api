@@ -27,17 +27,6 @@ jobs:
       with:
         sarif_file: results.sarif
 
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v2
-      with:
-        languages: javascript
-
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@v2
-
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v2
-
   Build-Production:
     runs-on: ubuntu-latest
     name: Build ubuntu
