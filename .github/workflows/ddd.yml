@@ -22,17 +22,18 @@ jobs:
 
     - run: npm install
     - run: npm run build
-    - run: echo "PORT=${{ vars.AWS_API_PORT }}" > backend-app/.env
-    - run: mv dist/ backend-app/
-    - run: mv prisma/ backend-app/
-    - run: mv package.json backend-app/
+    - run: mkdir backend-build
+    - run: echo "PORT=${{ vars.AWS_API_PORT }}" > backend-build/.env
+    - run: mv dist/ backend-build/
+    - run: mv prisma/ backend-build/
+    - run: mv package.json backend-build/
 
     - name: Login AWS EC2 Ubuntu
       uses: easingthemes/ssh-deploy@main
       env:
         SSH_PRIVATE_KEY: ${{ secrets.AWS_API_PRIVATE_KEY  }}
         ARGS: "-rlgoDzvc -i --delete"
-        SOURCE: "backend-app/"
+        SOURCE: "backend-build/"
         REMOTE_HOST: ${{ secrets.AWS_API_HOST }}
         REMOTE_USER: ${{ secrets.AWS_API_USER }}
         TARGET: "${{ vars.AWS_API_TARGET }}/src"
