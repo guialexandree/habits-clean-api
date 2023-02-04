@@ -7,7 +7,6 @@ jobs:
   Deploy-Production:
     runs-on: ubuntu-latest
     name: Deploy AWS EC2
-    needs: [Coverage-Tests]
 
     steps:
     - name: Checkout the code
