@@ -22,6 +22,7 @@ jobs:
 
     - run: npm install
     - run: npm run build
+    - run: ls -la
     - run: mkdir backend-build
     - run: echo "PORT=${{ vars.AWS_API_PORT }}" > backend-build/.env
     - run: mv dist/ backend-build/
