@@ -36,6 +36,6 @@ jobs:
         SOURCE: "backend-build/"
         REMOTE_HOST: ${{ secrets.AWS_API_HOST }}
         REMOTE_USER: ${{ secrets.AWS_API_USER }}
-        TARGET: "${{ vars.AWS_API_TARGET }}/src"
+        TARGET: "${{ vars.AWS_API_TARGET }}"
         EXCLUDE: "/dist/, /node_modules/"
 
