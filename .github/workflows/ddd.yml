@@ -26,7 +26,9 @@ jobs:
         chmod 400 habitskey.pem
 
     - name: Login AWS EC2 Ubuntu
-      run: ssh -i "habitskey.pem" ${{ secrets.AWS_API_USER }}@${{ secrets.AWS_API_HOST }}
+      run: |
+        ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+        ssh -i "habitskey.pem" ${{ secrets.AWS_API_USER }}@${{ secrets.AWS_API_HOST }}
 
     - name: Upload Permission
       uses: actions/upload-artifact@v3
