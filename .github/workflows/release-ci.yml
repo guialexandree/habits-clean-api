@@ -77,7 +77,7 @@ jobs:
   Coverage-Tests:
     environment: production
     runs-on: ubuntu-latest
-    name: Tests Units and Integration Tests
+    name: Coverage Tests
     needs: [Build-Release]
 
     steps:
