@@ -25,9 +25,9 @@ jobs:
     - run: ls -la
     - run: mkdir backend-build
     - run: echo "PORT=${{ vars.AWS_API_PORT }}" > backend-build/.env
-    - run: mv dist/ backend-build/
-    - run: mv prisma/ backend-build/
-    - run: mv package.json backend-build/
+    - run: mv dist/ backend-build/ -v
+    - run: mv prisma/ backend-build/ -v
+    - run: mv package.json backend-build/ -v
 
     - name: Login AWS EC2 Ubuntu
       uses: easingthemes/ssh-deploy@main
