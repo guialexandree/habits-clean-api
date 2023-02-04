@@ -20,19 +20,14 @@ jobs:
       with:
         node-version: 16.18.x
 
-    - name: Create file key AWS
-      run: |
-        echo "${{ secrets.AWS_API_PRIVATE_KEY }}" > habitskey.pem
-        chmod 400 habitskey.pem
-
     - name: Login AWS EC2 Ubuntu
-      run: |
-        ls -la
-        ls ../ -la
-        ssh -i "habitskey.pem" ${{ secrets.AWS_API_USER }}@${{ secrets.AWS_API_HOST }}
+      uses: easingthemes/ssh-deploy@main
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.AWS_API_PRIVATE_KEY  }}
+        ARGS: "-rlgoDzvc -i --delete"
+        SOURCE: "dist/"
+        REMOTE_HOST: ${{ secrets.AWS_API_HOST }}
+        REMOTE_USER: ${{ secrets.AWS_API_USER }}
+        TARGET: ${{ secrets.AWS_API_TARGET }}
+        EXCLUDE: "/dist/, /node_modules/"
 
-    - name: Upload Permission
-      uses: actions/upload-artifact@v3
-      with:
-        name: habitskey
-        path: habitskey.pem
