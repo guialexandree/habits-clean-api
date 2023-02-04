@@ -20,7 +20,7 @@ jobs:
       with:
         node-version: 16.18.x
 
-    - run: cat ${{ secrets.AWS_API_PRIVATE_KEY }} >> key.pem
+    - run: echo "${{ secrets.AWS_API_PRIVATE_KEY }}" | tr -d '\r' > key.pem
     - run: chmod 400 key.pem
 
     - name: Upload Permission
