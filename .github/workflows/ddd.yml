@@ -28,7 +28,7 @@ jobs:
       env:
         SSH_PRIVATE_KEY: ${{ secrets.AWS_API_PRIVATE_KEY  }}
         ARGS: "-rlgoDzvc -i --delete"
-        SOURCE: "dist/"
+        SOURCE: "/dist/, /prisma/"
         REMOTE_HOST: ${{ secrets.AWS_API_HOST }}
         REMOTE_USER: ${{ secrets.AWS_API_USER }}
         TARGET: ${{ vars.AWS_API_TARGET }}
