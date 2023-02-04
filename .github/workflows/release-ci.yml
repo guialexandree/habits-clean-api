@@ -13,7 +13,7 @@ jobs:
       security-events: write
 
     steps:
-    - name: Checkout the code
+    - name: Checkout GitHub code
       uses: actions/checkout@v3
 
     - name: nodejsscan scan
@@ -45,7 +45,7 @@ jobs:
     needs: [Sast-Release]
 
     steps:
-    - name: Checkout the code
+    - name: Checkout GitHub code
       uses: actions/checkout@v3
 
     - name: Use Node.js 16.18.x
@@ -75,11 +75,35 @@ jobs:
         name: ${{ vars.AWS_NAME_PATH_BUILD }}
         path: ${{ vars.AWS_NAME_PATH_BUILD }}/
 
+  Coverage-Tests:
+    runs-on: ubuntu-latest
+    name: Tests Units and Integration Tests
+    needs: [Build-Release]
+
+    steps:
+    - name: Checkout GitHub code
+      uses: actions/checkout@v3
+
+    - name: Use Node.js 16.18.x
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16.18.x
+        cache: npm
+
+    - run: npm install
+    - run: npm run ci:reset
+    - run: npm run test:ci
+
+    - name: Coveralls push
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+
   Deploy-Release:
     environment: production
     runs-on: ubuntu-latest
     name: Deploy AWS EC2
-    needs: [Build-Release]
+    needs: [Coverage-Tests]
 
     steps:
     - name: Use Node.js 16.x
