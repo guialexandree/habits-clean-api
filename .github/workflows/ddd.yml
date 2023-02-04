@@ -21,6 +21,8 @@ jobs:
         node-version: 16.18.x
 
     - run: ls -la
+    - run: ls .. -la
+    - run: ls ../.. -la
 
     - name: Login AWS EC2 Ubuntu
       uses: easingthemes/ssh-deploy@main
