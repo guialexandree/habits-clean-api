@@ -14,17 +14,26 @@ jobs:
     - name: Checkout the code
       uses: actions/checkout@v3
 
-    - name: Use Node.js 16.18.0
+    - name: Use Node.js 16.18.x
       uses: actions/setup-node@v3
       with:
         node-version: 16.18.x
         cache: npm
 
-    - run: npm install
-    - run: npm run build
-    - run: mv prisma/ dist/prisma 
-    - run: mv package.json dist/
-    - run: ls -la dist/
+    - name: Build App
+      run: |
+        npm install
+        npm run build
+
+    - name: Make App
+      run: |
+        mkdir backend-build
+        mkdir src
+        mv dist/ src/
+        mv src/ backend-build/src/
+        mv prisma/ backend-build/prisma/
+        mv package.json backend-build/
+        ls -la
 
     - name: Upload da pasta dist
       uses: actions/upload-artifact@v3
