@@ -52,13 +52,16 @@ jobs:
       with:
         node-version: 16.18.x
 
-    - name: Upload da pasta dist
+    - name: Download do Build-Production
       uses: actions/download-artifact@v3
       with:
         name: habits-backend-build
         path: habits-backend-build/
 
-    - run: echo "PORT=${{ vars.AWS_API_PORT }}" > habits-backend-build/.env
+    - name: Install Dependencies
+      run: |
+        echo "PORT=${{ vars.AWS_API_PORT }}" > habits-backend-build/.env
+        npm install
 
     - name: Login AWS EC2 Ubuntu
       uses: easingthemes/ssh-deploy@main
@@ -69,5 +72,5 @@ jobs:
         REMOTE_HOST: ${{ secrets.AWS_API_HOST }}
         REMOTE_USER: ${{ secrets.AWS_API_USER }}
         TARGET: "${{ vars.AWS_API_TARGET }}"
-        EXCLUDE: "/backend-build//, /node_modules/"
+        EXCLUDE: "/habits-backend-build/, /node_modules/"
 
