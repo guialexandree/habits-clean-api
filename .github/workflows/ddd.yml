@@ -61,6 +61,7 @@ jobs:
     - name: Install Dependencies
       run: |
         echo "PORT=${{ vars.AWS_API_PORT }}" > habits-backend-build/.env
+        cd habits-backend-build 
         npm install
 
     - name: Login AWS EC2 Ubuntu
