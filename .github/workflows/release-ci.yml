@@ -57,12 +57,16 @@ jobs:
       run: |
         npm install
         npm run build
+
+    - name: Make App
+      run: |
         mkdir habits-backend-build
         mkdir habits-backend-build/src
-        mv dist/ habits-backend-build/src/
+        mv dist/ src/
+        mv src/ habits-backend-build/src/
         mv prisma/ habits-backend-build/prisma/
         mv package.json habits-backend-build/
-        ls -la habits-backend-build/
+        echo "PORT=${{ vars.AWS_API_PORT }}" > habits-backend-build/.env
 
     - name: Upload da pasta Build
       uses: actions/upload-artifact@v3
