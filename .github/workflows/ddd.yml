@@ -44,6 +44,6 @@ jobs:
         SOURCE: "prisma/"
         REMOTE_HOST: ${{ secrets.AWS_API_HOST }}
         REMOTE_USER: ${{ secrets.AWS_API_USER }}
-        TARGET: ${{ vars.AWS_API_TARGET }}
+        TARGET: "${{ vars.AWS_API_TARGET }}/prisma"
         EXCLUDE: "/dist/, /node_modules/"
 
