@@ -26,13 +26,13 @@ jobs:
   Build-Development:
     environment: development
     runs-on: ubuntu-latest
-    name: Ubuntu Build - Node Versions
     needs: [Sast-Development]
 
     strategy:
       matrix:
         node-version: [16.x, 18.x]
 
+    name: Ubuntu Build - Node ${{ matrix.node-version }}
     steps:
     - name: Checkout the code
       uses: actions/checkout@v3
