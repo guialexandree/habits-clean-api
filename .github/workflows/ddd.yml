@@ -8,35 +8,26 @@ on:
 jobs:
   Build-Production:
     runs-on: ubuntu-latest
-    name: Build ubuntu
-
-    strategy:
-      matrix:
-        node-version: [16.x, 18.x]
+    name: Build ubuntu - Node
 
     steps:
     - name: Checkout the code
       uses: actions/checkout@v3
 
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Use Node.js 16.18.0
       uses: actions/setup-node@v3
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: 16.18.x
         cache: npm
 
     - run: npm install
     - run: npm run build
 
-    - name: Upload da pasta dist
-      uses: actions/upload-artifact@v3
-      with:
-        name: dist
-        path: dist/
-
   Deploy-Production:
     environment: production
     runs-on: ubuntu-latest
     name: Deploy AWS EC2
+    needs: [Build-Production]
 
     steps:
     - name: Checkout the code
@@ -47,8 +38,6 @@ jobs:
       with:
         node-version: 16.18.x
 
-    - run: npm install
-    - run: npm run build
     - run: ls -la
     - run: mkdir backend-build
     - run: mv dist/ backend-build/dist
