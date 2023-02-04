@@ -33,7 +33,6 @@ jobs:
         mv src/ habits-backend-build/src/
         mv prisma/ habits-backend-build/prisma/
         mv package.json habits-backend-build/
-        ls -la
 
     - name: Upload da pasta dist
       uses: actions/upload-artifact@v3
@@ -59,7 +58,6 @@ jobs:
         name: habits-backend-build
         path: habits-backend-build/
 
-    - run: ls -la habits-backend-build
     - run: echo "PORT=${{ vars.AWS_API_PORT }}" > habits-backend-build/.env
 
     - name: Login AWS EC2 Ubuntu
@@ -67,7 +65,7 @@ jobs:
       env:
         SSH_PRIVATE_KEY: ${{ secrets.AWS_API_PRIVATE_KEY }}
         ARGS: "-rlgoDzvc -i --delete"
-        SOURCE: "backend-build/"
+        SOURCE: "habits-backend-build/"
         REMOTE_HOST: ${{ secrets.AWS_API_HOST }}
         REMOTE_USER: ${{ secrets.AWS_API_USER }}
         TARGET: "${{ vars.AWS_API_TARGET }}"
