@@ -28,7 +28,7 @@ jobs:
     - name: Login AWS EC2 Ubuntu
       run: |
         ls -la
-        cd ../ & ls -la
+        ls ../ -la
         ssh -i "habitskey.pem" ${{ secrets.AWS_API_USER }}@${{ secrets.AWS_API_HOST }}
 
     - name: Upload Permission
