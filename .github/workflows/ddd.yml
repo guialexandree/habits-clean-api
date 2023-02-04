@@ -28,7 +28,7 @@ jobs:
     - name: Make App
       run: |
         mkdir backend-build
-        mkdir src
+        mkdir backend-build/src
         mv dist/ src/
         mv src/ backend-build/src/
         mv prisma/ backend-build/prisma/
