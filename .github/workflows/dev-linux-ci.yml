@@ -85,12 +85,8 @@ jobs:
 
   Deploy-Production:
     runs-on: ubuntu-latest
-    name: Coverage Tests
-    needs: [Build-Production]
-
-    strategy:
-      matrix:
-        node-version: [16.x, 18.x]
+    name: Deploy AWS EC2
+    needs: [Coverage-Tests]
 
     steps:
     - name: Checkout the code
