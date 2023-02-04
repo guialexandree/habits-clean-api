@@ -34,12 +34,6 @@ jobs:
         name: dist
         path: dist/
 
-    - name: Archive production artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: modules
-        path: node_modules/
-
   Tests:
     needs: [Build]
     runs-on: ubuntu-latest
