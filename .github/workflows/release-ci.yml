@@ -39,8 +39,9 @@ jobs:
       uses: github/codeql-action/analyze@v2
 
   Build-Release:
+    environment: production
     runs-on: ubuntu-latest
-    name: Build ubuntu
+    name: Ubuntu Build - Node 16.18.x
     needs: [Sast-Release]
 
     steps:
@@ -60,16 +61,45 @@ jobs:
 
     - name: Make App
       run: |
-        mkdir habits-backend-build
-        mkdir habits-backend-build/src
-        mv dist/* habits-backend-build/src/
-        ls -la habits-backend-build/src/
-        mv prisma/ habits-backend-build/prisma/
-        mv package.json habits-backend-build/
-        echo "PORT=${{ vars.AWS_API_PORT }}" > habits-backend-build/.env
+        mkdir ${{ vars.AWS_NAME_PATH_BUILD }}
+        mkdir ${{ vars.AWS_NAME_PATH_BUILD }}/src
+        mv dist/* ${{ vars.AWS_NAME_PATH_BUILD }}/src/
+        ls -la ${{ vars.AWS_NAME_PATH_BUILD }}/src/
+        mv prisma/ ${{ vars.AWS_NAME_PATH_BUILD }}/prisma/
+        mv package.json ${{ vars.AWS_NAME_PATH_BUILD }}/
+        echo "PORT=${{ vars.AWS_API_PORT }}" > ${{ vars.AWS_NAME_PATH_BUILD }}/.env
 
     - name: Upload da pasta Build
       uses: actions/upload-artifact@v3
       with:
-        name: habits-backend-build
-        path: habits-backend-build/
+        name: ${{ vars.AWS_NAME_PATH_BUILD }}
+        path: ${{ vars.AWS_NAME_PATH_BUILD }}/
+
+  Deploy-Release:
+    environment: production
+    runs-on: ubuntu-latest
+    name: Deploy AWS EC2
+    needs: [Build-Release]
+
+    steps:
+    - name: Use Node.js 16.x
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16.18.x
+
+    - name: Download do Build-Production
+      uses: actions/download-artifact@v3
+      with:
+        name: ${{ vars.AWS_NAME_PATH_BUILD }}
+        path: ${{ vars.AWS_NAME_PATH_BUILD }}/
+
+    - name: Push AWS EC2 Ubuntu
+      uses: easingthemes/ssh-deploy@main
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.AWS_API_PRIVATE_KEY }}
+        ARGS: "-rlgoDzvc -i --delete"
+        SOURCE: "${{ vars.AWS_NAME_PATH_BUILD }}/"
+        REMOTE_HOST: ${{ secrets.AWS_API_HOST }}
+        REMOTE_USER: ${{ secrets.AWS_API_USER }}
+        TARGET: "${{ vars.AWS_API_TARGET }}"
+        EXCLUDE: "/${{ vars.AWS_NAME_PATH_BUILD }}/, /node_modules/"
