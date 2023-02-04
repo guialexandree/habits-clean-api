@@ -6,6 +6,33 @@ on:
     branches: [ci/workflows]
     
 jobs:
+  Build-Production:
+    runs-on: ubuntu-latest
+    name: Build ubuntu
+
+    strategy:
+      matrix:
+        node-version: [16.x, 18.x]
+
+    steps:
+    - name: Checkout the code
+      uses: actions/checkout@v3
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: npm
+
+    - run: npm install
+    - run: npm run build
+
+    - name: Upload da pasta dist
+      uses: actions/upload-artifact@v3
+      with:
+        name: dist
+        path: dist/
+
   Deploy-Production:
     environment: production
     runs-on: ubuntu-latest
