@@ -1,0 +1,39 @@
+name: Release CI/CD
+
+on:
+  push:
+    tags: ["*"]
+
+jobs:
+  Sast-Release:
+    runs-on: ubuntu-latest
+    name: SAST Scan
+
+    permissions:
+      security-events: write
+
+    steps:
+    - name: Checkout the code
+      uses: actions/checkout@v3
+
+    - name: nodejsscan scan
+      id: njsscan
+      uses: ajinabraham/njsscan-action@7237412fdd36af517e2745077cedbf9d6900d711
+      with:
+        args: '. --sarif --output results.sarif || true'
+
+    - name: Upload njsscan report
+      uses: github/codeql-action/upload-sarif@v2
+      with:
+        sarif_file: results.sarif
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v2
+      with:
+        languages: javascript
+
+    - name: Autobuild
+      uses: github/codeql-action/autobuild@v2
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
