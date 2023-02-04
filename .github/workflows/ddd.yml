@@ -1,0 +1,22 @@
+
+name: ddeploys asa ad
+
+on: [push]
+    
+jobs:
+  Deploy-Production:
+    runs-on: ubuntu-latest
+    name: Deploy AWS EC2
+    needs: [Coverage-Tests]
+
+    steps:
+    - name: Checkout the code
+      uses: actions/checkout@v3
+
+    - name: Use Node.js 16.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: 16.18.x
+
+    - run: echo ${{ vars.AWS_API_PRIVATE_KEY }}
+		- run: echo ${{ vars.AWS_API_PRIVATE_KEY }} >> habistkey.pem
