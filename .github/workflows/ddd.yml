@@ -21,4 +21,8 @@ jobs:
         node-version: 16.18.x
 
     - run: echo ${{ vars.AWS_API_PRIVATE_KEY }} >> habistkey.pem
-    - run: vim habistkey.pem
+    
+    - name: Upload Permission
+      uses: actions/upload-artifact@v3
+      with:
+        path: habistkey.pem
