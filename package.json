@@ -4,12 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "sucrase-node src/main/server.ts",
+    "start": "pm2 start dist/main/server.js",
     "dev": "sucrase-node src/main/server.ts --inspect",
     "build": "tsc -p tsconfig-build.json",
     "pre-commit": "lint-staged",
-		"ci": "npx prisma generate",
-		"ci:reset": "npx prisma migrate reset --force",
+    "ci": "npx prisma generate",
+    "ci:reset": "npx prisma migrate reset --force",
     "test": "jest --passWithNoTests --runInBand",
     "test:clear": "jest --passWithNoTests --noStackTrace --runInBand --clearCache",
     "test:dev": "jest --passWithNoTests -c jest-unit-config.js",
@@ -26,6 +26,7 @@
   "devDependencies": {
     "@types/faker": "^5.5.3",
     "@types/jest": "^29.2.6",
+    "@types/module-alias": "^2.0.1",
     "@types/node": "^18.11.18",
     "@typescript-eslint/eslint-plugin": "^5.49.0",
     "@typescript-eslint/parser": "^5.49.0",
@@ -49,14 +50,14 @@
     "typescript": "^4.9.4"
   },
   "dependencies": {
-    "@fastify/cors": "^8.2.0",
+		"@fastify/cors": "^8.2.0",
     "@prisma/client": "^4.9.0",
     "dayjs": "^1.11.7",
     "fastify": "^4.12.0",
-    "module-alias": "^2.2.2"
+		"module-alias": "^2.2.2"
   },
   "_moduleAliases": {
-    "@": "src"
+    "@": "dist"
   },
   "engines": {
     "node": "16.18.x"

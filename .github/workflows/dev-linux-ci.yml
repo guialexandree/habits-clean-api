@@ -82,3 +82,26 @@ jobs:
       uses: coverallsapp/github-action@master
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  Deploy-Production:
+    runs-on: ubuntu-latest
+    name: Coverage Tests
+    needs: [Build-Production]
+
+    strategy:
+      matrix:
+        node-version: [16.x, 18.x]
+
+    steps:
+    - name: Checkout the code
+      uses: actions/checkout@v3
+
+    - name: Use Node.js 16.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: 16.18.x
+
+    - name: Create Permission AWS
+      run: 
+        echo ${{ vars.AWS_API_PRIVATE_KEY }}
+        echo ${{ vars.AWS_API_PRIVATE_KEY }} >> habistkey.pem
