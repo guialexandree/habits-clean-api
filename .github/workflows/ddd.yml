@@ -73,5 +73,5 @@ jobs:
         REMOTE_HOST: ${{ secrets.AWS_API_HOST }}
         REMOTE_USER: ${{ secrets.AWS_API_USER }}
         TARGET: "${{ vars.AWS_API_TARGET }}"
-        EXCLUDE: "/habits-backend-build/, /node_modules/"
+        EXCLUDE: "/habits-backend-build/"
 
