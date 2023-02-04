@@ -27,19 +27,19 @@ jobs:
 
     - name: Make App
       run: |
-        mkdir ${{ vars.AWS_NAME_PATH_BUILD }}
-        mkdir ${{ vars.AWS_NAME_PATH_BUILD }}/src
+        mkdir habits-backend-build
+        mkdir habits-backend-build/src
         mv dist/ src/
-        mv src/ ${{ vars.AWS_NAME_PATH_BUILD }}/src/
-        mv prisma/ ${{ vars.AWS_NAME_PATH_BUILD }}/prisma/
-        mv package.json ${{ vars.AWS_NAME_PATH_BUILD }}/
+        mv src/ habits-backend-build/src/
+        mv prisma/ habits-backend-build/prisma/
+        mv package.json habits-backend-build/
         ls -la
 
     - name: Upload da pasta dist
       uses: actions/upload-artifact@v3
       with:
-        name: ${{ vars.AWS_NAME_PATH_BUILD }}
-        path: ${{ vars.AWS_NAME_PATH_BUILD }}/
+        name: habits-backend-build
+        path: habits-backend-build/
 
   Deploy-Production:
     environment: production
@@ -56,18 +56,18 @@ jobs:
     - name: Upload da pasta dist
       uses: actions/download-artifact@v3
       with:
-        name: ${{ vars.AWS_NAME_PATH_BUILD }}
-        path: ${{ vars.AWS_NAME_PATH_BUILD }}/
+        name: habits-backend-build
+        path: habits-backend-build/
 
-    - run: ls -la ${{ vars.AWS_NAME_PATH_BUILD }}
-    - run: echo "PORT=${{ vars.AWS_API_PORT }}" > ${{ vars.AWS_NAME_PATH_BUILD }}/.env
-    - run: mv prisma/ ${{ vars.AWS_NAME_PATH_BUILD }}/prisma
+    - run: ls -la habits-backend-build
+    - run: echo "PORT=${{ vars.AWS_API_PORT }}" > habits-backend-build/.env
+    - run: mv prisma/ habits-backend-build/prisma
     - run: mv package.json backend-build/
 
     - name: Login AWS EC2 Ubuntu
       uses: easingthemes/ssh-deploy@main
       env:
-        SSH_PRIVATE_KEY: ${{ secrets.AWS_API_PRIVATE_KEY  }}
+        SSH_PRIVATE_KEY: ${{ secrets.AWS_API_PRIVATE_KEY }}
         ARGS: "-rlgoDzvc -i --delete"
         SOURCE: "backend-build/"
         REMOTE_HOST: ${{ secrets.AWS_API_HOST }}
