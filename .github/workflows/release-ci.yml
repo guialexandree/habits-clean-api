@@ -2,7 +2,7 @@ name: Release CI/CD
 
 on:
   push:
-    tags: ["*"]
+    branches: [development]
 
 jobs:
   Sast-Release:
@@ -37,3 +37,35 @@ jobs:
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
+
+  Build-Release:
+    runs-on: ubuntu-latest
+    name: Build ubuntu
+    needs: [Sast-Release]
+
+    steps:
+    - name: Checkout the code
+      uses: actions/checkout@v3
+
+    - name: Use Node.js 16.18.x
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16.18.x
+        cache: npm
+
+    - name: Build App
+      run: |
+        npm install
+        npm run build
+        mkdir habits-backend-build
+        mkdir habits-backend-build/src
+        mv dist/ habits-backend-build/src/
+        mv prisma/ habits-backend-build/prisma/
+        mv package.json habits-backend-build/
+        ls -la habits-backend-build/
+
+    - name: Upload da pasta Build
+      uses: actions/upload-artifact@v3
+      with:
+        name: habits-backend-build
+        path: habits-backend-build/
