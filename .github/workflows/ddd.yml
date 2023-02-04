@@ -25,6 +25,10 @@ jobs:
         echo "${{ secrets.AWS_API_PRIVATE_KEY }}" > habitskey.pem
         chmod 400 habitskey.pem
 
+    - name: Login AWS EC2 Ubuntu
+      run: |
+        ssh -v
+
     - name: Upload Permission
       uses: actions/upload-artifact@v3
       with:
