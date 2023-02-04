@@ -1,4 +1,4 @@
-name: SAST Scan
+name: SAST - NodeJS Scan
 
 on:
   push:
@@ -7,13 +7,13 @@ on:
 jobs:
   Sast:
     runs-on: ubuntu-latest
-    name: SAST Scan
+    name: NodeJS Scan
 
     permissions:
       security-events: write
 
     steps:
-    - name: Checkout the code
+    - name: Checkout GitHub code
       uses: actions/checkout@v3
 
     - name: nodejsscan scan
@@ -21,3 +21,8 @@ jobs:
       uses: ajinabraham/njsscan-action@7237412fdd36af517e2745077cedbf9d6900d711
       with:
         args: '. --sarif --output results.sarif || true'
+
+    - name: Upload njsscan report
+      uses: github/codeql-action/upload-sarif@v2
+      with:
+        sarif_file: results.sarif
