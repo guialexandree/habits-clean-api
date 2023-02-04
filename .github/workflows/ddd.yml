@@ -22,11 +22,6 @@ jobs:
 
     - run: npm install
     - run: npm run build
-    - run: ls .. -la
-    - run: ls ../.. -la
-    - run: ls ../../.. -la
-    - run: ls ../../../work/habits-clean-api -la
-    - run: ls / -la
 
     - name: Login AWS EC2 Ubuntu
       uses: easingthemes/ssh-deploy@main
@@ -36,6 +31,6 @@ jobs:
         SOURCE: "dist/"
         REMOTE_HOST: ${{ secrets.AWS_API_HOST }}
         REMOTE_USER: ${{ secrets.AWS_API_USER }}
-        TARGET: ${{ secrets.AWS_API_TARGET }}
+        TARGET: ${{ vars.AWS_API_TARGET }}
         EXCLUDE: "/dist/, /node_modules/"
 
