@@ -51,7 +51,7 @@ jobs:
   Coverage-Tests:
     environment: development
     runs-on: ubuntu-latest
-    name: Coverage Tests
+    name: Coverage Tests - Node ${{ matrix.node-version }}
     needs: [Build-Development]
 
     strategy:
