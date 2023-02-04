@@ -1,0 +1,95 @@
+name: Production Linux CI
+
+on:
+  push:
+    branches: ["master"]
+
+jobs:
+  Sast-Production:
+    runs-on: ubuntu-latest
+    name: CodeQL Scan
+
+    permissions:
+      security-events: write
+
+    steps:
+    - name: Checkout the code
+      uses: actions/checkout@v3
+
+    - name: nodejsscan scan
+      id: njsscan
+      uses: ajinabraham/njsscan-action@7237412fdd36af517e2745077cedbf9d6900d711
+      with:
+        args: '. --sarif --output results.sarif || true'
+
+    - name: Upload njsscan report
+      uses: github/codeql-action/upload-sarif@v2
+      with:
+        sarif_file: results.sarif
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v2
+      with:
+        languages: javascript
+
+    - name: Autobuild
+      uses: github/codeql-action/autobuild@v2
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
+
+  Build-Production:
+    runs-on: ubuntu-latest
+    name: Build ubuntu
+    needs: [Sast-Production]
+
+    strategy:
+      matrix:
+        node-version: [16.x, 18.x]
+
+    steps:
+    - name: Checkout the code
+      uses: actions/checkout@v3
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: npm
+
+    - run: npm install
+    - run: npm run build --if-present
+
+    - name: Upload da pasta dist
+      uses: actions/upload-artifact@v3
+      with:
+        name: dist
+        path: dist/
+
+  Coverage-Tests:
+    runs-on: ubuntu-latest
+    name: Run tests units and integration
+    needs: [Build-Production]
+
+    strategy:
+      matrix:
+        node-version: [16.x, 18.x]
+
+    steps:
+    - name: Checkout the code
+      uses: actions/checkout@v3
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: npm
+
+    - run: npm install
+    - run: npm run ci:reset
+    - run: npm run test:ci
+
+    - name: Coveralls push
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
