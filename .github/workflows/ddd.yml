@@ -27,19 +27,19 @@ jobs:
 
     - name: Make App
       run: |
-        mkdir habits-backend-build
-        mkdir habits-backend-build/src
+        mkdir ${{ vars.AWS_NAME_PATH_BUILD }}
+        mkdir ${{ vars.AWS_NAME_PATH_BUILD }}/src
         mv dist/ src/
-        mv src/ habits-backend-build/src/
-        mv prisma/ habits-backend-build/prisma/
-        mv package.json habits-backend-build/
+        mv src/ ${{ vars.AWS_NAME_PATH_BUILD }}/src/
+        mv prisma/ ${{ vars.AWS_NAME_PATH_BUILD }}/prisma/
+        mv package.json ${{ vars.AWS_NAME_PATH_BUILD }}/
         ls -la
 
     - name: Upload da pasta dist
       uses: actions/upload-artifact@v3
       with:
-        name: habits-backend-build
-        path: habits-backend-build/
+        name: ${{ vars.AWS_NAME_PATH_BUILD }}
+        path: ${{ vars.AWS_NAME_PATH_BUILD }}/
 
   Deploy-Production:
     environment: production
@@ -56,12 +56,12 @@ jobs:
     - name: Upload da pasta dist
       uses: actions/download-artifact@v3
       with:
-        name: habits-backend-build
-        path: habits-backend-build/
+        name: ${{ vars.AWS_NAME_PATH_BUILD }}
+        path: ${{ vars.AWS_NAME_PATH_BUILD }}/
 
-    - run: ls -la habits-backend-build
-    - run: echo "PORT=${{ vars.AWS_API_PORT }}" > backend-build/.env
-    - run: mv prisma/ habits-backend-build/prisma
+    - run: ls -la ${{ vars.AWS_NAME_PATH_BUILD }}
+    - run: echo "PORT=${{ vars.AWS_API_PORT }}" > ${{ vars.AWS_NAME_PATH_BUILD }}/.env
+    - run: mv prisma/ ${{ vars.AWS_NAME_PATH_BUILD }}/prisma
     - run: mv package.json backend-build/
 
     - name: Login AWS EC2 Ubuntu
