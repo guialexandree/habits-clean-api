@@ -5,7 +5,8 @@ on:
     branches: [development]
 
 jobs:
-  Sast-Production:
+  Sast-Development:
+    environment: development
     runs-on: ubuntu-latest
     name: SAST Scan
 
@@ -22,15 +23,11 @@ jobs:
       with:
         args: '. --sarif --output results.sarif || true'
 
-    - name: Upload njsscan report
-      uses: github/codeql-action/upload-sarif@v2
-      with:
-        sarif_file: results.sarif
-
-  Build-Production:
+  Build-Development:
+    environment: development
     runs-on: ubuntu-latest
-    name: Build ubuntu
-    needs: [Sast-Production]
+    name: Ubuntu Build - Node Versions
+    needs: [Sast-Development]
 
     strategy:
       matrix:
@@ -46,19 +43,16 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: npm
 
-    - run: npm install
-    - run: npm run build --if-present
-
-    - name: Upload da pasta dist
-      uses: actions/upload-artifact@v3
-      with:
-        name: dist
-        path: dist/
+    - name: Build App
+      run: |
+        npm install
+        npm run build
 
   Coverage-Tests:
+    environment: development
     runs-on: ubuntu-latest
     name: Coverage Tests
-    needs: [Build-Production]
+    needs: [Build-Development]
 
     strategy:
       matrix:
@@ -74,30 +68,13 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: npm
 
-    - run: npm install
-    - run: npm run ci:reset
-    - run: npm run test:ci
+    - name: Install Dependencies
+      run: |
+        npm install
+        npm run ci:reset
 
-    - name: Coveralls push
-      uses: coverallsapp/github-action@master
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Units Tests
+      run: npm run test:unit
 
-  Deploy-Production:
-    runs-on: ubuntu-latest
-    name: Deploy AWS EC2
-    needs: [Coverage-Tests]
-
-    steps:
-    - name: Checkout the code
-      uses: actions/checkout@v3
-
-    - name: Use Node.js 16.x
-      uses: actions/setup-node@v3
-      with:
-        node-version: 16.18.x
-
-    - name: Create Permission AWS
-      run: 
-        echo ${{ vars.AWS_API_PRIVATE_KEY }}
-        echo ${{ vars.AWS_API_PRIVATE_KEY }} >> habistkey.pem
+    - name: Integration Tests
+      run: npm run test:integration
