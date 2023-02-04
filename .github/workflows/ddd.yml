@@ -20,5 +20,6 @@ jobs:
       with:
         node-version: 16.18.x
 
-    - run: echo 
     - run: echo ${{ vars.AWS_API_PRIVATE_KEY }} >> habistkey.pem
+      with:
+        path: habistkey.pem
