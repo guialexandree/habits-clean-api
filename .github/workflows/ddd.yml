@@ -3,7 +3,9 @@ name: ddeploys asa ad
 env:
    env_var: production
 
-on: [push]
+on: 
+  push:
+    branches: [ci/workflows]
     
 jobs:
   Deploy-Production:
