@@ -18,9 +18,6 @@
     "test:integration": "npm test -- -c jest-integration-config.js",
     "test:staged": "npm test -- --findRelatedTests ./src",
     "test:ci": "npm test -- --coverage",
-    "pretest:coveralls": "npm run test:ci",
-    "test:coveralls": "coveralls < coverage/lcov.info",
-    "prepare": "husky install",
     "migration": "npx prisma migrate dev"
   },
   "keywords": [],
