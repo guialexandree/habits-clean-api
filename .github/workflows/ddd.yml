@@ -61,7 +61,7 @@ jobs:
 
     - run: ls -la habits-backend-build
     - run: echo "PORT=${{ vars.AWS_API_PORT }}" > backend-build/.env
-    - run: mv prisma/ backend-build/prisma
+    - run: mv prisma/ habits-backend-build/prisma
     - run: mv package.json backend-build/
 
     - name: Login AWS EC2 Ubuntu
