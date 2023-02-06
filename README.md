@@ -2,7 +2,7 @@
 [![Known Vulnerabilities](https://snyk.io/test/github/guialexandree/habits-clean-api/badge.svg)](https://snyk.io/test/github/guialexandree/habits-clean-api)
 [![](https://github.com/guialexandree/habits-clean-api/actions/workflows/development-ci.yml/badge.svg)](https://github.com/guialexandree/habits-clean-api/actions/workflows/development-ci.yml/badge.svg)
 [![](https://github.com/guialexandree/habits-clean-api/actions/workflows/release-ci.yml/badge.svg)](https://github.com/guialexandree/habits-clean-api/actions/workflows/release-ci.yml/badge.svg)
-
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 # Habits 🎈 - API para Gerenciamento de Hábitos
 
