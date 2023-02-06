@@ -8,10 +8,34 @@
 
 ![image](https://user-images.githubusercontent.com/30730216/215792250-ae7ce48a-3fed-4c11-a126-ae12bd87d217.png)
 
-
 Durante a semana NLW realizada pela **RocketSeat** para comunidade dev, foram desenvolvidos três projetos que juntos
 tem a finalidade de Gerenciar hábitos diários.
 Conforme sugerido pelo Diego ao final da semana deveríamos dar um passo além nos projetos e incluir mais funcionalidades.
+
+## Analise de Requisitos
+
+Código | Requisito | RN
+--- | --- | --- |
+RF01 | Deve ser possível criar hábitos semanais | RN01 |
+RF02 | Deve ser possível consultar os hábitos disponíveis em determinado dia | RN02, RN03 |
+RF03 | Deve ser possível consultar os hábitos realizados em determinado dia | RN02, RN03 |
+RF04 | Deve ser possível consultar lista anual de hábitos disponiveis | RN04, RN05, RN06 |
+RF05 | Deve ser possível consultar lista anual de hábitos realizados  | RN04, RN05, RN06 |
+RF06 | Deve ser possível marcar um hábito como realizado  | RN07, RN08, RN09 |
+RF07 | Deve ser possível cancelar a realização de um hábito como realizado  | RN07, RN10 |
+
+Código | Regra de Negócio
+--- | --- |
+RN01 | Requer um título e pelo menos um dia da semana para realização do hábito |
+RN02 | Os hábitos devem ficar visíveis a partir da data de criação |
+RN03 | Requer data no formato YYYY-MM-DD |
+RN04 | Deve ser retornado a lista com informações diárias de hábitos `amount` e `completed` |
+RN05 | O dia só deve ser retornado se possuia hábito disponível no dia da semana |
+RN06 | O dia só deve ser retornado se possuia hábito realizado no dia da semana |
+RN07 | Deve ser válido se o id do hábito fornecido é válido |
+RN08 | Os hábitos serão marcados como realizados sempre na data atual |
+RN09 | Não deve ser possível realizar hábitos em data retroativas |
+RN10 | Não deve ser possível cancelar a realização de hábitos em data retroativa |
 
 ## Rotas
 🚩 POST `/habits` cadastro de novos hábitos<br>
