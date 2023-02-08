@@ -1,7 +1,7 @@
-# Política de Segurança
+# Security policy
 
-## Relatando uma Vulnerabilidade
+## Reporting a Vulnerability
 
-O projeto está integrado com o **snyk** para scannear as vulnerabilidades sempre que realizadas movimentações nas branches, 
-porém caso você encontre uma vulnerabilidade que ainda não foi mencionada, eu ficaria muito grato se você abrir uma issue com os detalhes para que 
-eu possa buscar uma solução
+The project is integrated with **snyk** to scan for vulnerabilities whenever you move branches,
+however if you find a vulnerability that has not yet been mentioned, I would be very grateful if you would open an issue with the details so that
+I can look for a solution
